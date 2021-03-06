@@ -87,8 +87,6 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
     for entry in WalkDir::new(input_dir) {
         let entry = entry?;
 
-        println!("Current entry {:?}", entry);
-
         let path = entry.path();
         if path.is_dir() {
             println!("Skipping directory {:?}", path.to_str());
@@ -193,9 +191,7 @@ fn move_photo(photo: &Photo, move_file: bool) -> Result<(), Error> {
             }
         } else {
             match std::fs::copy(&photo.path, &new_path) {
-                Ok(ok) => {
-                    println!("Copied {} bytes presumably", ok);
-                }
+                Ok(ok) => {}
                 Err(err) => {
                     println!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
                 }
