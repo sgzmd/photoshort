@@ -22,24 +22,25 @@ struct Config {
     dry_run: bool,
 }
 
+fn convert_files(config: &Config) {}
+
 fn main() {
-    let args = vec!["--help"];
+    use std::env;
+    let args: Vec<String> = env::args().collect();
     println!("{:?}", args);
     let action = parse(&args);
     match action {
         Ok(action) => match action {
-            Action::HELP => {
-                println!("Help!")
+            Action::CONVERT(config) => {
+                println!("Starting conversion for config {:?}", config);
             }
-            Action::CONVERT(_) => {
-                println!("Convert")
-            }
+            _ => {}
         },
         Err(_) => {}
     }
 }
 
-fn parse(input: &Vec<&str>) -> Result<Action, ArgsError> {
+fn parse(input: &Vec<String>) -> Result<Action, ArgsError> {
     let mut args = Args::new("ProgramName", "ProgDesc");
     args.flag("h", "help", "Print the usage menu");
     args.flag("t", "dry_run", "Dry-run, do not make actual changes");
@@ -116,71 +117,4 @@ fn parse(input: &Vec<&str>) -> Result<Action, ArgsError> {
 }
 
 #[cfg(test)]
-mod tests {
-    use crate::{error_messages, parse, Action};
-    use args::ArgsError;
-    use std::error::Error;
-
-    #[test]
-    fn test_parse_help() -> Result<(), ArgsError> {
-        let args = vec!["--help"];
-        let res = parse(&args);
-        assert_eq!(res?, Action::HELP);
-
-        return Ok(());
-    }
-
-    #[test]
-    fn test_parse_help_must_fail() {
-        let args = vec!["--hel"];
-        let res = parse(&args);
-        assert!(res.is_err(), "This should throw an error");
-    }
-
-    #[test]
-    fn test_parse_no_src_or_no_dest() {
-        assert!(
-            parse(&vec!["-s abc"]).is_err(),
-            "Source without destination"
-        );
-        assert!(
-            parse(&vec!["-d abc"]).is_err(),
-            "Destination without destination"
-        );
-    }
-
-    #[test]
-    fn test_parse_convert() -> Result<(), ArgsError> {
-        let res = parse(&vec!["--src=source", "--dest=dst"]);
-        match res? {
-            Action::HELP => {
-                panic!("This is not help command")
-            }
-            Action::CONVERT(config) => {
-                assert_eq!(config.source, "source");
-                assert_eq!(config.destination, "dst");
-                assert_eq!(config.dry_run, false);
-                assert_eq!(config.logfile, Option::None)
-            }
-        };
-
-        let res = parse(&vec![
-            "--src=source",
-            "--dest=dst",
-            "--log_file=mylogfile",
-            "--dry_run",
-        ]);
-
-        match res? {
-            Action::HELP => {
-                panic!("This is not help command")
-            }
-            Action::CONVERT(config) => {
-                assert_eq!(config.dry_run, true);
-                assert_eq!(config.logfile, Option::Some(String::from("mylogfile")));
-            }
-        }
-
-        return Ok(());
-    }
-}
+mod tests;
