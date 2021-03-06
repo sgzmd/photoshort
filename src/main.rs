@@ -7,6 +7,7 @@ use exif::{In, Tag};
 use getopts::Occur;
 use std::io;
 use std::path::Path;
+use std::io::{Error, ErrorKind};
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -33,8 +34,6 @@ struct Photo {
     new_path: Option<String>,
 }
 
-fn convert_files(config: &Config) {}
-
 fn main() {
     use std::env;
     let args: Vec<String> = env::args().collect();
@@ -44,10 +43,35 @@ fn main() {
         Ok(action) => match action {
             Action::CONVERT(config) => {
                 println!("Starting conversion for config {:?}", config);
+                convert_files(&config);
             }
             _ => {}
         },
         Err(_) => {}
+    }
+}
+
+
+fn convert_files(config: &Config) {
+    let file_list = make_file_list(&config.source);
+    if file_list.is_err() {
+        println!("Error building list of files: {:?}", file_list.err());
+        return;
+    }
+
+    let mut file_list = file_list.unwrap();
+    println!("Produced a list of {} files", file_list.len());
+    update_new_path(&config.destination, &mut file_list);
+    println!("Updated a list of {} files", file_list.len());
+    for photo in file_list {
+        match move_photo(&photo, false) {
+            Ok(_) => {
+                println!("Moved photo {} -> {}", &photo.path, &photo.new_path.as_ref().unwrap());
+            }
+            Err(err) => {
+                println!("Failed to move photo {}: {}", photo.path, err);
+            }
+        }
     }
 }
 
@@ -131,18 +155,44 @@ fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
     }
 }
 
-fn move_photo(photo: &Photo, move_file: bool) -> Result<(), &str> {
+fn move_photo(photo: &Photo, move_file: bool) -> Result<(), Error> {
     return if photo.new_path.is_none() {
-        Err(("new_path is not available"))
+        Err(Error::new(ErrorKind::InvalidData, "new_path not available"))
     } else {
         let new_path = photo.new_path.as_ref().unwrap();
+
+        let full_path = Path::new(new_path);
+        let dir = match full_path.parent() {
+            None => { return Err(Error::new(ErrorKind::InvalidData,
+                                            format!("No parent directory for {}", new_path).as_str())); }
+            Some(dir) => { dir }
+        };
+
+        if !dir.exists() {
+            match std::fs::create_dir_all(dir) {
+                Err(err) => { return Err(err.into()); }
+                _ => {}
+            }
+        }
+
         if move_file {
-            std::fs::rename(&photo.path, &new_path);
+            match std::fs::rename(&photo.path, &new_path) {
+                Ok(_) => {}
+                Err(err) => { println!("Failed to move file: {}", err); }
+            }
         } else {
-            std::fs::copy(&photo.path, &new_path);
+            match std::fs::copy(&photo.path, &new_path) {
+                Ok(ok) => { println!("Copied {} bytes presumably", ok); }
+                Err(err) => {
+                    println!("Failed to copy {} -> {}: {}",
+                             &photo.path,
+                             &new_path,
+                             err);
+                }
+            }
         }
         Ok(())
-    }
+    };
 }
 
 fn parse(input: &Vec<String>) -> Result<Action, ArgsError> {
