@@ -6,8 +6,8 @@ use chrono::NaiveDateTime;
 use exif::{In, Tag};
 use getopts::Occur;
 use std::io;
-use std::path::Path;
 use std::io::{Error, ErrorKind};
+use std::path::Path;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -51,7 +51,6 @@ fn main() {
     }
 }
 
-
 fn convert_files(config: &Config) {
     let file_list = make_file_list(&config.source);
     if file_list.is_err() {
@@ -66,7 +65,11 @@ fn convert_files(config: &Config) {
     for photo in file_list {
         match move_photo(&photo, false) {
             Ok(_) => {
-                println!("Moved photo {} -> {}", &photo.path, &photo.new_path.as_ref().unwrap());
+                println!(
+                    "Moved photo {} -> {}",
+                    &photo.path,
+                    &photo.new_path.as_ref().unwrap()
+                );
             }
             Err(err) => {
                 println!("Failed to move photo {}: {}", photo.path, err);
@@ -163,14 +166,20 @@ fn move_photo(photo: &Photo, move_file: bool) -> Result<(), Error> {
 
         let full_path = Path::new(new_path);
         let dir = match full_path.parent() {
-            None => { return Err(Error::new(ErrorKind::InvalidData,
-                                            format!("No parent directory for {}", new_path).as_str())); }
-            Some(dir) => { dir }
+            None => {
+                return Err(Error::new(
+                    ErrorKind::InvalidData,
+                    format!("No parent directory for {}", new_path).as_str(),
+                ));
+            }
+            Some(dir) => dir,
         };
 
         if !dir.exists() {
             match std::fs::create_dir_all(dir) {
-                Err(err) => { return Err(err.into()); }
+                Err(err) => {
+                    return Err(err.into());
+                }
                 _ => {}
             }
         }
@@ -178,16 +187,17 @@ fn move_photo(photo: &Photo, move_file: bool) -> Result<(), Error> {
         if move_file {
             match std::fs::rename(&photo.path, &new_path) {
                 Ok(_) => {}
-                Err(err) => { println!("Failed to move file: {}", err); }
+                Err(err) => {
+                    println!("Failed to move file: {}", err);
+                }
             }
         } else {
             match std::fs::copy(&photo.path, &new_path) {
-                Ok(ok) => { println!("Copied {} bytes presumably", ok); }
+                Ok(ok) => {
+                    println!("Copied {} bytes presumably", ok);
+                }
                 Err(err) => {
-                    println!("Failed to copy {} -> {}: {}",
-                             &photo.path,
-                             &new_path,
-                             err);
+                    println!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
                 }
             }
         }

@@ -1,11 +1,13 @@
 #[cfg(test)]
 mod tests {
-    use crate::{error_messages, make_file_list, parse, update_new_path, Action, Photo, move_photo};
+    use crate::{
+        error_messages, make_file_list, move_photo, parse, update_new_path, Action, Photo,
+    };
     use args::ArgsError;
-    use chrono::{NaiveDateTime, NaiveDate};
+    use chrono::{NaiveDate, NaiveDateTime};
+    use file_diff::diff_files;
     use std::error::Error;
     use std::io;
-    use file_diff::{diff_files};
     use std::path::Path;
 
     #[test]
@@ -129,11 +131,11 @@ mod tests {
         let photo = Photo {
             date: NaiveDate::from_ymd(2008, 5, 30).and_hms(15, 56, 1),
             path: original_path,
-            new_path: Option::Some(format!("{}/new_path.jpg", temp_dir_path))
+            new_path: Option::Some(format!("{}/new_path.jpg", temp_dir_path)),
         };
 
         println!("Moving {:?}", photo);
-        assert!(move_photo(&photo, false /* copying */ ).is_ok());
+        assert!(move_photo(&photo, false /* copying */).is_ok());
         let mut file = std::fs::File::open(temp_dir_path + "/new_path.jpg")?;
         let mut original_file = std::fs::File::open(Path::new(&photo.path));
         file_diff::diff_files(&mut file, &mut original_file?);
