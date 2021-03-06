@@ -2,7 +2,7 @@ extern crate args;
 extern crate getopts;
 
 use args::{Args, ArgsError};
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, ParseError};
 use exif::{In, Tag};
 use getopts::Occur;
 use std::io;
@@ -108,13 +108,24 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
                         .with_unit(&exif)
                         .to_string();
 
-                    let no_timezone =
-                        NaiveDateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S").unwrap();
-                    result.push(Photo {
-                        date: no_timezone,
-                        path: String::from(path.to_str().unwrap()),
-                        new_path: Option::None,
-                    });
+                    let parsed = NaiveDateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S");
+                    match parsed {
+                        Ok(ndt) => {
+                            result.push(Photo {
+                                date: ndt,
+                                path: String::from(path.to_str().unwrap()),
+                                new_path: Option::None,
+                            });
+                        }
+                        Err(err) => {
+                            println!(
+                                "Cannot parse datetime {} for file {}: {:?}",
+                                &date,
+                                path.to_str().unwrap(),
+                                err
+                            );
+                        }
+                    }
                 } else {
                     println!("Field {} is empty for {:?}", Tag::DateTimeOriginal, path);
                 }
