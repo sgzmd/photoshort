@@ -2,8 +2,8 @@ extern crate args;
 extern crate getopts;
 
 use args::{Args, ArgsError};
-use chrono::{NaiveDate, NaiveDateTime};
-use exif::{Error, Exif, In, Tag};
+use chrono::NaiveDateTime;
+use exif::{In, Tag};
 use getopts::Occur;
 use std::io;
 use std::path::Path;
@@ -28,8 +28,9 @@ struct Config {
 
 #[derive(Debug)]
 struct Photo {
-    date: NaiveDate,
+    date: NaiveDateTime,
     path: String,
+    new_path: Option<String>,
 }
 
 fn convert_files(config: &Config) {}
@@ -85,8 +86,9 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
                     let no_timezone =
                         NaiveDateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S").unwrap();
                     result.push(Photo {
-                        date: no_timezone.date(),
+                        date: no_timezone,
                         path: String::from(path.to_str().unwrap()),
+                        new_path: Option::None,
                     });
                 } else {
                     println!("Field {} is empty for {:?}", Tag::DateTimeOriginal, path);
@@ -98,7 +100,49 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
         }
     }
 
-    return Ok((result));
+    return Ok(result);
+}
+
+fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
+    use chrono::{Datelike, NaiveDate};
+
+    for photo in photos {
+        let existing_path = Path::new(&photo.path);
+        match existing_path.file_name() {
+            None => {
+                println!(
+                    "Path doesn't appear to have a valid file name: {}",
+                    photo.path
+                )
+            }
+            Some(file_name) => {
+                let path = format!(
+                    "{}/{}/{:02}/{:02}/{}",
+                    dest_dir,
+                    photo.date.year(),
+                    photo.date.month(),
+                    photo.date.day(),
+                    file_name.to_str().unwrap() // should be safe (why?)
+                );
+
+                photo.new_path = Option::Some(path);
+            }
+        }
+    }
+}
+
+fn move_photo(photo: &Photo, move_file: bool) -> Result<(), &str> {
+    return if photo.new_path.is_none() {
+        Err(("new_path is not available"))
+    } else {
+        let new_path = photo.new_path.as_ref().unwrap();
+        if move_file {
+            std::fs::rename(&photo.path, &new_path);
+        } else {
+            std::fs::copy(&photo.path, &new_path);
+        }
+        Ok(())
+    }
 }
 
 fn parse(input: &Vec<String>) -> Result<Action, ArgsError> {
