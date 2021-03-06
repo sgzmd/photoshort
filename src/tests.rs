@@ -1,8 +1,9 @@
 #[cfg(test)]
 mod tests {
-    use crate::{error_messages, parse, Action};
+    use crate::{error_messages, make_file_list, parse, Action};
     use args::ArgsError;
     use std::error::Error;
+    use std::io;
 
     #[test]
     fn test_parse_help() -> Result<(), ArgsError> {
@@ -66,6 +67,22 @@ mod tests {
                 assert_eq!(config.logfile, Option::Some(String::from("mylogfile")));
             }
         }
+
+        return Ok(());
+    }
+
+    #[test]
+    fn test_walk_tree() -> Result<(), io::Error> {
+        let input_dir = String::from("./test-assets/");
+        let file_list = make_file_list(&input_dir)?;
+
+        // On the current set of test photographs we expect exactly 54
+        // photos to have valid exif and date.
+        assert_eq!(file_list.len(), 54);
+
+        let _output = file_list.iter().fold(String::new(), |acc, arg| {
+            acc + format!("{:?}\n", arg).as_str()
+        });
 
         return Ok(());
     }
