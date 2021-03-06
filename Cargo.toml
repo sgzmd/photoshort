@@ -1,0 +1,14 @@
+[package]
+name = "photosort"
+version = "0.1.0"
+authors = ["Roman Kirillov <sigizmund@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+walkdir = "2"
+kamadak-exif = "0.5.3"
+chrono = "0.4.19"
+args = "2.0"
+getopts = "0.2"
