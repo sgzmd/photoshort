@@ -80,10 +80,10 @@ fn convert_files(config: &Config) {
 
 fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
     use walkdir::WalkDir;
+    use futures::join;
 
     let mut result: Vec<Photo> = Vec::new();
 
-    let exifreader = exif::Reader::new();
     for entry in WalkDir::new(input_dir) {
         let entry = entry?;
 
@@ -93,50 +93,59 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
             continue;
         }
 
-        let file = std::fs::File::open(path)?;
-        let mut bufreader = std::io::BufReader::new(&file);
-        let exif = exifreader.read_from_container(&mut bufreader);
-        match exif {
-            Ok(exif) => {
-                // TODO(sgzmd): we have to possibly use DateTimeDigitized for, e.g. scanned photos.
-                // Unclear how much value this will add, so leaving it for later.
-                let field = exif.get_field(Tag::DateTimeOriginal, In::PRIMARY);
-                if field.is_some() {
-                    let date = field
-                        .unwrap() // This is safe because we checked that field.is_some()
-                        .display_value()
-                        .with_unit(&exif)
-                        .to_string();
-
-                    let parsed = NaiveDateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S");
-                    match parsed {
-                        Ok(ndt) => {
-                            result.push(Photo {
-                                date: ndt,
-                                path: String::from(path.to_str().unwrap()),
-                                new_path: Option::None,
-                            });
-                        }
-                        Err(err) => {
-                            println!(
-                                "Cannot parse datetime {} for file {}: {:?}",
-                                &date,
-                                path.to_str().unwrap(),
-                                err
-                            );
-                        }
-                    }
-                } else {
-                    println!("Field {} is empty for {:?}", Tag::DateTimeOriginal, path);
-                }
+        let photo = process_file(path).await;
+        match photo {
+            Ok(photo) => {
+                result.push(photo);
             }
-            Err(_) => {
-                println!("Failed to read exif data from {}", path.to_str().unwrap());
+            Err(err) => {
+                println!("Error processing file {}: {:?}", path.to_str().unwrap(), err)
             }
         }
     }
 
     return Ok(result);
+}
+
+async fn process_file(path: &Path) -> Result<Photo, Error> {
+    let file = std::fs::File::open(path)?;
+    let mut bufreader = std::io::BufReader::new(&file);
+    let exifreader = exif::Reader::new();
+    let exif = exifreader.read_from_container(&mut bufreader);
+    match exif {
+        Ok(exif) => {
+            // TODO(sgzmd): we have to possibly use DateTimeDigitized for, e.g. scanned photos.
+            // Unclear how much value this will add, so leaving it for later.
+            let field = exif.get_field(Tag::DateTimeOriginal, In::PRIMARY);
+            if field.is_some() {
+                let date = field
+                    .unwrap() // This is safe because we checked that field.is_some()
+                    .display_value()
+                    .with_unit(&exif)
+                    .to_string();
+
+                let parsed = NaiveDateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S");
+                match parsed {
+                    Ok(ndt) => {
+                        return Ok(Photo {
+                            date: ndt,
+                            path: String::from(path.to_str().unwrap()),
+                            new_path: Option::None,
+                        });
+                    }
+                    Err(err) => {
+                        return Err(Error::new(ErrorKind::InvalidData, err));
+                    }
+                }
+            } else {
+                let err = format!("Field {} is empty for {:?}", Tag::DateTimeOriginal, path);
+                return Err(Error::new(ErrorKind::InvalidData, err));
+            }
+        }
+        Err(e) => {
+            return Err(Error::new(ErrorKind::InvalidData, e));
+        }
+    }
 }
 
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
