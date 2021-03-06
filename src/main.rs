@@ -93,7 +93,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
             continue;
         }
 
-        let photo = process_file(path).await;
+        let photo = process_file(path);
         match photo {
             Ok(photo) => {
                 result.push(photo);
@@ -107,7 +107,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
     return Ok(result);
 }
 
-async fn process_file(path: &Path) -> Result<Photo, Error> {
+fn process_file(path: &Path) -> Result<Photo, Error> {
     let file = std::fs::File::open(path)?;
     let mut bufreader = std::io::BufReader::new(&file);
     let exifreader = exif::Reader::new();
