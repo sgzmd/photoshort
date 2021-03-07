@@ -9,7 +9,11 @@ use std::io;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
 
+
+use log::{info, trace, warn};
+use log::LevelFilter;
 use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
+
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -39,12 +43,12 @@ struct Photo {
 fn main() {
     use std::env;
     let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
+    info!("{:?}", args);
     let action = parse(&args);
     match action {
         Ok(action) => match action {
             Action::CONVERT(config) => {
-                println!("Starting conversion for config {:?}", config);
+                info!("Starting conversion for config {:?}", config);
                 convert_files(&config);
             }
             _ => {}
@@ -56,27 +60,32 @@ fn main() {
 fn convert_files(config: &Config) {
     let file_list = make_file_list(&config.source);
     if file_list.is_err() {
-        println!("Error building list of files: {:?}", file_list.err());
+        info!("Error building list of files: {:?}", file_list.err());
         return;
     }
 
+    if config.logfile.is_some() {
+        let logfile = config.logfile.as_ref().unwrap();        
+        simple_logging::log_to_file(logfile, LevelFilter::Info);
+    }
+
     let mut file_list = file_list.unwrap();
-    println!("Produced a list of {} files", file_list.len());
+    info!("Produced a list of {} files", file_list.len());
     update_new_path(&config.destination, &mut file_list);
-    println!("Updated a list of {} files", file_list.len());
+    info!("Updated a list of {} files", file_list.len());
     let bar = ProgressBar::new(file_list.len() as u64);
     for photo in file_list {
         bar.inc(1);
         match move_photo(&photo, false, config.dry_run) {
             Ok(_) => {
-                eprintln!(
+                info!(
                     "Moved photo {} -> {}",
                     &photo.path,
                     &photo.new_path.as_ref().unwrap()
                 );
             }
             Err(err) => {
-                eprintln!("Failed to move photo {}: {}", photo.path, err);
+                info!("Failed to move photo {}: {}", photo.path, err);
             }
         }
     }
@@ -94,7 +103,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
 
         let path = entry.path();
         if path.is_dir() {
-            eprintln!("Skipping directory {:?}", path.to_str());
+            info!("Skipping directory {:?}", path.to_str());
             continue;
         }
 
@@ -104,7 +113,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
                 result.push(photo);
             }
             Err(err) => {
-                eprintln!(
+                info!(
                     "Error processing file {}: {:?}",
                     path.to_str().unwrap(),
                     err
@@ -189,7 +198,7 @@ fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
         let existing_path = Path::new(&photo.path);
         match existing_path.file_name() {
             None => {
-                println!(
+                info!(
                     "Path doesn't appear to have a valid file name: {}",
                     photo.path
                 )
@@ -237,21 +246,21 @@ fn move_photo(photo: &Photo, move_file: bool, dry_run: bool) -> Result<(), Error
         }
 
         if dry_run {
-            eprintln!("Dry-run, not really copying/moving {}", &photo.path);
+            info!("Dry-run, not really copying/moving {}", &photo.path);
             return Ok(());
         }
         if move_file {
             match std::fs::rename(&photo.path, &new_path) {
                 Ok(_) => {}
                 Err(err) => {
-                    eprintln!("Failed to move file: {}", err);
+                    info!("Failed to move file: {}", err);
                 }
             }
         } else {
             match std::fs::copy(&photo.path, &new_path) {
                 Ok(ok) => {}
                 Err(err) => {
-                    eprintln!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
+                    info!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
                 }
             }
         }
