@@ -135,7 +135,11 @@ mod tests {
         };
 
         println!("Moving {:?}", photo);
-        assert!(move_photo(&photo, false /* copying */).is_ok());
+        assert!(move_photo(
+            &photo, false, /* copying */
+            false  /* no dry run */
+        )
+        .is_ok());
         let mut file = std::fs::File::open(temp_dir_path + "/new_path.jpg")?;
         let mut original_file = std::fs::File::open(Path::new(&photo.path));
         file_diff::diff_files(&mut file, &mut original_file?);

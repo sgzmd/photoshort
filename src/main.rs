@@ -9,6 +9,8 @@ use std::io;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
 
+use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
+
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
 }
@@ -62,25 +64,28 @@ fn convert_files(config: &Config) {
     println!("Produced a list of {} files", file_list.len());
     update_new_path(&config.destination, &mut file_list);
     println!("Updated a list of {} files", file_list.len());
+    let bar = ProgressBar::new(file_list.len() as u64);
     for photo in file_list {
-        match move_photo(&photo, false) {
+        bar.inc(1);
+        match move_photo(&photo, false, config.dry_run) {
             Ok(_) => {
-                println!(
+                eprintln!(
                     "Moved photo {} -> {}",
                     &photo.path,
                     &photo.new_path.as_ref().unwrap()
                 );
             }
             Err(err) => {
-                println!("Failed to move photo {}: {}", photo.path, err);
+                eprintln!("Failed to move photo {}: {}", photo.path, err);
             }
         }
     }
+    bar.finish();
 }
 
 fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
-    use walkdir::WalkDir;
     use futures::join;
+    use walkdir::WalkDir;
 
     let mut result: Vec<Photo> = Vec::new();
 
@@ -89,7 +94,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
 
         let path = entry.path();
         if path.is_dir() {
-            println!("Skipping directory {:?}", path.to_str());
+            eprintln!("Skipping directory {:?}", path.to_str());
             continue;
         }
 
@@ -99,7 +104,11 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
                 result.push(photo);
             }
             Err(err) => {
-                println!("Error processing file {}: {:?}", path.to_str().unwrap(), err)
+                eprintln!(
+                    "Error processing file {}: {:?}",
+                    path.to_str().unwrap(),
+                    err
+                )
             }
         }
     }
@@ -108,6 +117,31 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
 }
 
 fn process_file(path: &Path) -> Result<Photo, Error> {
+    let file_name = path.file_name();
+    if file_name.is_none() {
+        return Err(Error::new(ErrorKind::InvalidData, "No file name"));
+    }
+
+    let file_name = String::from(
+        file_name
+            .unwrap() // unwrapping is safe here and below because we know
+            .to_str() // file name is not none.
+            .unwrap(),
+    );
+
+    // Let's skip everything that doesn't look like jpeg/png etc since we don't
+    // know how to parse them anyway, so can just as well save time reading it.
+    if !(file_name.ends_with("jpg")
+        || file_name.ends_with("jpeg")
+        || file_name.ends_with("png")
+        || file_name.ends_with("gif"))
+    {
+        return Err(Error::new(
+            ErrorKind::InvalidData,
+            format!("File type not supported: {}", file_name),
+        ));
+    }
+
     let file = std::fs::File::open(path)?;
     let mut bufreader = std::io::BufReader::new(&file);
     let exifreader = exif::Reader::new();
@@ -176,7 +210,7 @@ fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
     }
 }
 
-fn move_photo(photo: &Photo, move_file: bool) -> Result<(), Error> {
+fn move_photo(photo: &Photo, move_file: bool, dry_run: bool) -> Result<(), Error> {
     return if photo.new_path.is_none() {
         Err(Error::new(ErrorKind::InvalidData, "new_path not available"))
     } else {
@@ -202,18 +236,22 @@ fn move_photo(photo: &Photo, move_file: bool) -> Result<(), Error> {
             }
         }
 
+        if dry_run {
+            eprintln!("Dry-run, not really copying/moving {}", &photo.path);
+            return Ok(());
+        }
         if move_file {
             match std::fs::rename(&photo.path, &new_path) {
                 Ok(_) => {}
                 Err(err) => {
-                    println!("Failed to move file: {}", err);
+                    eprintln!("Failed to move file: {}", err);
                 }
             }
         } else {
             match std::fs::copy(&photo.path, &new_path) {
                 Ok(ok) => {}
                 Err(err) => {
-                    println!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
+                    eprintln!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
                 }
             }
         }
