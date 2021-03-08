@@ -9,11 +9,10 @@ use std::io;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
 
-
-use log::{info, trace, warn};
-use log::LevelFilter;
 use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
-
+use log::LevelFilter;
+use log::{info, trace, warn};
+use walkdir::DirEntry;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -65,8 +64,14 @@ fn convert_files(config: &Config) {
     }
 
     if config.logfile.is_some() {
-        let logfile = config.logfile.as_ref().unwrap();        
-        simple_logging::log_to_file(logfile, LevelFilter::Info);
+        let logfile = config.logfile.as_ref().unwrap();
+        match simple_logging::log_to_file(logfile, LevelFilter::Info) {
+            Ok(_) => {}
+            Err(e) => {
+                eprintln!("Couldn't enable logging: {:?}", e);
+                std::process::exit(1);
+            }
+        }
     }
 
     let mut file_list = file_list.unwrap();
@@ -74,6 +79,13 @@ fn convert_files(config: &Config) {
     update_new_path(&config.destination, &mut file_list);
     info!("Updated a list of {} files", file_list.len());
     let bar = ProgressBar::new(file_list.len() as u64);
+
+    bar.set_message("Moving/copying files ... ");
+    bar.set_style(
+        ProgressStyle::default_bar()
+            .template("[{elapsed_precise}] {bar:80.green/red} {pos:>7}/{len:7} {msg}")
+            .progress_chars("█░"),
+    );
     for photo in file_list {
         bar.inc(1);
         match move_photo(&photo, false, config.dry_run) {
@@ -93,17 +105,54 @@ fn convert_files(config: &Config) {
 }
 
 fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
+    info!("Make file list {}", line!());
     use futures::join;
     use walkdir::WalkDir;
 
     let mut result: Vec<Photo> = Vec::new();
 
-    for entry in WalkDir::new(input_dir) {
-        let entry = entry?;
+    info!("Starting to walk the file tree..");
+    let pb = ProgressBar::new_spinner();
+    pb.enable_steady_tick(120);
+    pb.set_style(
+        ProgressStyle::default_spinner()
+            .tick_strings(&[
+                "/",
+                "-",
+                "\\",
+                "|",
+                "✅",
+            ])
+            .template("{spinner:.blue} {msg}"),
+    );
+    pb.set_message("Reading list of files, might take a while ...");
+    let all_entries: Vec<Result<walkdir::DirEntry, walkdir::Error>> =
+        WalkDir::new(input_dir).into_iter().collect();
+    pb.finish_with_message("Done");
 
+    let bar = ProgressBar::new(all_entries.len() as u64);
+    bar.set_message("Collecting information about files....");
+    bar.set_style(
+        ProgressStyle::default_bar()
+            .template("[{elapsed_precise}] {bar:80.cyan/blue} {pos:>7}/{len:7} {msg}")
+            .progress_chars("█░"),
+    );
+    for entry in all_entries {
+        bar.inc(1);
+        match entry {
+            Err(_) => {
+                continue;
+            }
+            _ => {}
+        };
+        let entry = entry.unwrap();
         let path = entry.path();
         if path.is_dir() {
             info!("Skipping directory {:?}", path.to_str());
+            continue;
+        }
+
+        if !is_supported_file(entry.file_name().to_str().unwrap_or("")) {
             continue;
         }
 
@@ -121,6 +170,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
             }
         }
     }
+    bar.finish();
 
     return Ok(result);
 }
@@ -140,11 +190,7 @@ fn process_file(path: &Path) -> Result<Photo, Error> {
 
     // Let's skip everything that doesn't look like jpeg/png etc since we don't
     // know how to parse them anyway, so can just as well save time reading it.
-    if !(file_name.ends_with("jpg")
-        || file_name.ends_with("jpeg")
-        || file_name.ends_with("png")
-        || file_name.ends_with("gif"))
-    {
+    if !(is_supported_file(&file_name)) {
         return Err(Error::new(
             ErrorKind::InvalidData,
             format!("File type not supported: {}", file_name),
@@ -189,6 +235,13 @@ fn process_file(path: &Path) -> Result<Photo, Error> {
             return Err(Error::new(ErrorKind::InvalidData, e));
         }
     }
+}
+
+fn is_supported_file(file_name: &str) -> bool {
+    file_name.ends_with("jpg")
+        || file_name.ends_with("jpeg")
+        || file_name.ends_with("png")
+        || file_name.ends_with("gif")
 }
 
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
