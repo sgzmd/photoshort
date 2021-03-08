@@ -29,7 +29,9 @@ struct Config {
     source: String,
     destination: String,
     logfile: Option<String>,
+    // TODO(sgzmd): these two need to be merged into a single enum
     dry_run: bool,
+    copy: bool
 }
 
 #[derive(Debug)]
@@ -325,6 +327,7 @@ fn parse(input: &Vec<String>) -> Result<Action, ArgsError> {
     let mut args = Args::new("ProgramName", "ProgDesc");
     args.flag("h", "help", "Print the usage menu");
     args.flag("t", "dry_run", "Dry-run, do not make actual changes");
+    args.flag("c", "copy", "Copy files instead of moving them");
     args.option(
         "s",
         "src",
@@ -367,11 +370,13 @@ fn parse(input: &Vec<String>) -> Result<Action, ArgsError> {
         }
     }
 
+    let copy: bool = args.value_of("copy").unwrap_or(false);
+
     let src: Result<String, ArgsError> = args.value_of("src");
     let dst: Result<String, ArgsError> = args.value_of("dest");
     let log: Result<String, ArgsError> = args.value_of("log_file");
 
-    if (src.is_err() || dst.is_err()) {
+    if src.is_err() || dst.is_err() {
         println!("{}", args.full_usage());
         return Result::Err(ArgsError::new(
             "args",
@@ -390,6 +395,7 @@ fn parse(input: &Vec<String>) -> Result<Action, ArgsError> {
             Ok(d) => d,
             Err(_) => false,
         },
+        copy,
     };
 
     // OK it's not help, let' see what we have here.
