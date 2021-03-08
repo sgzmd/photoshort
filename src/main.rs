@@ -90,7 +90,7 @@ fn convert_files(config: &Config) {
     );
     for photo in file_list {
         bar.inc(1);
-        match move_photo(&photo, false, config.dry_run) {
+        match move_photo(&photo, !config.copy, config.dry_run) {
             Ok(_) => {
                 info!(
                     "Moved photo {} -> {}",
