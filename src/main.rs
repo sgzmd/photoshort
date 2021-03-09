@@ -2,9 +2,9 @@ extern crate args;
 extern crate ffmpeg_next as ffmpeg;
 extern crate getopts;
 
-use std::io;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
+use std::{env, io};
 
 use args::{Args, ArgsError};
 use chrono::{DateTime, Datelike, NaiveDateTime};
@@ -14,6 +14,8 @@ use getopts::Occur;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::info;
 use log::LevelFilter;
+
+mod configurator;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
