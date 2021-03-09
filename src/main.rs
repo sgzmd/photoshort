@@ -17,6 +17,8 @@ use log::LevelFilter;
 
 mod configurator;
 
+use configurator::configurator::Config;
+
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
 }
@@ -25,16 +27,6 @@ mod error_messages {
 enum Action {
     HELP,
     CONVERT(Config),
-}
-
-#[derive(PartialEq, Eq, Debug)]
-struct Config {
-    source: String,
-    destination: String,
-    logfile: Option<String>,
-    // TODO(sgzmd): these two need to be merged into a single enum
-    dry_run: bool,
-    copy: bool,
 }
 
 #[derive(Debug)]
