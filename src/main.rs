@@ -7,14 +7,13 @@ use std::io::{Error, ErrorKind};
 use std::path::Path;
 
 use args::{Args, ArgsError};
-use chrono::{DateTime, NaiveDateTime, ParseError};
+use chrono::{DateTime, Datelike, NaiveDateTime};
 use exif::{In, Tag};
 use ffmpeg::format::context::Input;
 use getopts::Occur;
-use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
-use log::{info, trace, warn};
+use indicatif::{ProgressBar, ProgressStyle};
+use log::info;
 use log::LevelFilter;
-use walkdir::DirEntry;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -111,7 +110,6 @@ fn convert_files(config: &Config) {
 
 fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
     info!("Make file list {}", line!());
-    use futures::join;
     use walkdir::WalkDir;
 
     let mut result: Vec<Photo> = Vec::new();
@@ -300,8 +298,6 @@ fn is_supported_file(file_name: &str) -> bool {
 }
 
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
-    use chrono::{Datelike, NaiveDate};
-
     for photo in photos {
         let existing_path = Path::new(&photo.path);
         match existing_path.file_name() {
@@ -366,7 +362,7 @@ fn move_photo(photo: &Photo, move_file: bool, dry_run: bool) -> Result<(), Error
             }
         } else {
             match std::fs::copy(&photo.path, &new_path) {
-                Ok(ok) => {}
+                Ok(_) => {}
                 Err(err) => {
                     info!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
                 }

@@ -1,16 +1,14 @@
 #[cfg(test)]
 mod tests {
-    use std::error::Error;
     use std::io;
     use std::path::Path;
 
     use args::ArgsError;
-    use chrono::{NaiveDate, NaiveDateTime};
-    use file_diff::diff_files;
+    use chrono::NaiveDate;
 
     use crate::{
-        Action, error_messages, extract_ndt, get_ffmpeg_date, make_file_list, move_photo,
-        parse, Photo, update_new_path,
+        extract_ndt, get_ffmpeg_date, make_file_list, move_photo, parse, update_new_path, Action,
+        Photo,
     };
 
     #[test]
@@ -97,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_update_path() {
-        use chrono::{Datelike, NaiveDate};
+        use chrono::NaiveDate;
 
         let dest_dir = String::from("TEST_DIR");
         let mut photos = vec![
@@ -126,7 +124,7 @@ mod tests {
 
     #[test]
     fn copy_file_test() -> Result<(), io::Error> {
-        let mut tempdir = tempfile::tempdir().unwrap();
+        let tempdir = tempfile::tempdir().unwrap();
         let temp_dir_path = tempdir.path().to_str().unwrap().to_string();
 
         println!("Created temp directory {}", temp_dir_path);
@@ -144,16 +142,10 @@ mod tests {
         )
         .is_ok());
         let mut file = std::fs::File::open(temp_dir_path + "/new_path.jpg")?;
-        let mut original_file = std::fs::File::open(Path::new(&photo.path));
+        let original_file = std::fs::File::open(Path::new(&photo.path));
         file_diff::diff_files(&mut file, &mut original_file?);
 
         return Ok(());
-    }
-
-    #[test]
-    fn test_copy_photos() {
-        let mut tempdir = tempfile::tempdir().unwrap();
-        let path = tempdir.path().to_str().unwrap();
     }
 
     #[test]
