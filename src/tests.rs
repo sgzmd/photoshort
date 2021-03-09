@@ -1,14 +1,11 @@
 #[cfg(test)]
 mod tests {
+    use chrono::NaiveDate;
     use std::io;
     use std::path::Path;
 
-    use args::ArgsError;
-    use chrono::NaiveDate;
-
     use crate::{
-        extract_ndt, get_ffmpeg_date, make_file_list, move_photo, update_new_path, Action,
-        Photo,
+        extract_ndt, get_ffmpeg_date, make_file_list, move_photo, update_new_path, Action, Photo,
     };
 
     #[test]

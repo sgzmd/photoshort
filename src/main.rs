@@ -1,24 +1,20 @@
-extern crate args;
 extern crate ffmpeg_next as ffmpeg;
-extern crate getopts;
 
+use std::io;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
-use std::{env, io};
 
-use args::{Args, ArgsError};
 use chrono::{DateTime, Datelike, NaiveDateTime};
 use exif::{In, Tag};
 use ffmpeg::format::context::Input;
-use getopts::Occur;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::info;
 use log::LevelFilter;
 
 mod config;
+mod pserror;
 
 use config::configurator::Config;
-use getopts::Occur::Optional;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -37,7 +33,7 @@ struct Photo {
     new_path: Option<String>,
 }
 
-fn main() -> Result<(), Box<std::error::Error>>{
+fn main() -> Result<(), Box<std::error::Error>> {
     let config = config::configurator::get_config(Option::None);
     if config.is_err() {
         return Err(config.err().unwrap());
@@ -168,22 +164,6 @@ fn process_file(path: &Path) -> Result<Photo, Error> {
     let file_name = path.file_name();
     if file_name.is_none() {
         return Err(Error::new(ErrorKind::InvalidData, "No file name"));
-    }
-
-    let file_name = String::from(
-        file_name
-            .unwrap() // unwrapping is safe here and below because we know
-            .to_str() // file name is not none.
-            .unwrap(),
-    );
-
-    // Let's skip everything that doesn't look like jpeg/png etc since we don't
-    // know how to parse them anyway, so can just as well save time reading it.
-    if !(is_supported_file(&file_name)) {
-        return Err(Error::new(
-            ErrorKind::InvalidData,
-            format!("File type not supported: {}", file_name),
-        ));
     }
 
     let file = std::fs::File::open(path)?;

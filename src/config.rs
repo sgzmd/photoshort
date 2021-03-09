@@ -130,7 +130,7 @@ mod tests {
             "--dst=DEST",
             "--mode=move",
             "--log=some.file.log",
-            "-t"
+            "-t",
         ];
         let config = get_config(Option::from(&options))?;
 
