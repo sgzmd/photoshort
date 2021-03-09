@@ -1,14 +1,17 @@
 #[cfg(test)]
 mod tests {
-    use crate::{
-        error_messages, make_file_list, move_photo, parse, update_new_path, Action, Photo,
-    };
-    use args::ArgsError;
-    use chrono::{NaiveDate, NaiveDateTime};
-    use file_diff::diff_files;
     use std::error::Error;
     use std::io;
     use std::path::Path;
+
+    use args::ArgsError;
+    use chrono::{NaiveDate, NaiveDateTime};
+    use file_diff::diff_files;
+
+    use crate::{
+        Action, error_messages, extract_ndt, get_ffmpeg_date, make_file_list, move_photo,
+        parse, Photo, update_new_path,
+    };
 
     #[test]
     fn test_parse_help() -> Result<(), ArgsError> {
@@ -82,8 +85,8 @@ mod tests {
         let file_list = make_file_list(&input_dir)?;
 
         // On the current set of test photographs we expect exactly 54
-        // photos to have valid exif and date.
-        assert_eq!(file_list.len(), 54);
+        // photos and 1 video to have valid exif and date.
+        assert_eq!(file_list.len(), 55);
 
         let _output = file_list.iter().fold(String::new(), |acc, arg| {
             acc + format!("{:?}\n", arg).as_str()
@@ -151,5 +154,26 @@ mod tests {
     fn test_copy_photos() {
         let mut tempdir = tempfile::tempdir().unwrap();
         let path = tempdir.path().to_str().unwrap();
+    }
+
+    #[test]
+    fn test_extract_ndt() {
+        let dt = "2011-11-05T02:51:16.000000Z";
+
+        assert_eq!(
+            extract_ndt(dt),
+            NaiveDate::from_ymd(2011, 11, 5).and_hms(2, 51, 16)
+        );
+    }
+
+    #[test]
+    fn test_get_ffmpeg_date() {
+        let path = Path::new("./test-assets/mpeg/05112011034.mp4");
+        let dt = get_ffmpeg_date(&path);
+
+        assert_eq!(
+            dt.unwrap(),
+            NaiveDate::from_ymd(2011, 11, 5).and_hms(2, 51, 16)
+        );
     }
 }

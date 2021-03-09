@@ -1,17 +1,19 @@
 extern crate args;
+extern crate ffmpeg_next as ffmpeg;
 extern crate getopts;
 
-use args::{Args, ArgsError};
-use chrono::{NaiveDateTime, ParseError};
-use exif::{In, Tag};
-use getopts::Occur;
 use std::io;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
 
+use args::{Args, ArgsError};
+use chrono::{DateTime, NaiveDateTime, ParseError};
+use exif::{In, Tag};
+use ffmpeg::format::context::Input;
+use getopts::Occur;
 use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
-use log::LevelFilter;
 use log::{info, trace, warn};
+use log::LevelFilter;
 use walkdir::DirEntry;
 
 mod error_messages {
@@ -31,7 +33,7 @@ struct Config {
     logfile: Option<String>,
     // TODO(sgzmd): these two need to be merged into a single enum
     dry_run: bool,
-    copy: bool
+    copy: bool,
 }
 
 #[derive(Debug)]
@@ -50,6 +52,7 @@ fn main() {
         Ok(action) => match action {
             Action::CONVERT(config) => {
                 info!("Starting conversion for config {:?}", config);
+                ffmpeg::init().unwrap();
                 convert_files(&config);
             }
             _ => {}
@@ -118,13 +121,7 @@ fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, io::Error> {
     pb.enable_steady_tick(120);
     pb.set_style(
         ProgressStyle::default_spinner()
-            .tick_strings(&[
-                "/",
-                "-",
-                "\\",
-                "|",
-                "✅",
-            ])
+            .tick_strings(&["/", "-", "\\", "|", "✅"])
             .template("{spinner:.blue} {msg}"),
     );
     pb.set_message("Reading list of files, might take a while ...");
@@ -202,6 +199,7 @@ fn process_file(path: &Path) -> Result<Photo, Error> {
     let file = std::fs::File::open(path)?;
     let mut bufreader = std::io::BufReader::new(&file);
     let exifreader = exif::Reader::new();
+
     let exif = exifreader.read_from_container(&mut bufreader);
     match exif {
         Ok(exif) => {
@@ -228,22 +226,77 @@ fn process_file(path: &Path) -> Result<Photo, Error> {
                         return Err(Error::new(ErrorKind::InvalidData, err));
                     }
                 }
-            } else {
-                let err = format!("Field {} is empty for {:?}", Tag::DateTimeOriginal, path);
-                return Err(Error::new(ErrorKind::InvalidData, err));
             }
         }
-        Err(e) => {
-            return Err(Error::new(ErrorKind::InvalidData, e));
+        // Ignoring, will try ffmpeg later
+        Err(_) => {}
+    }
+
+    let err = format!("Field {} is empty for {:?}", Tag::DateTimeOriginal, path);
+
+    // okay let's try ffmpeg
+    let ffmpeg_date = get_ffmpeg_date(&path);
+    return if ffmpeg_date.is_ok() {
+        Ok(Photo {
+            date: ffmpeg_date.unwrap(),
+            path: String::from(path.to_str().unwrap()),
+            new_path: Option::None,
+        })
+    } else {
+        info!("Couldn't get ffmpeg date from {:?}", path);
+        Err(Error::new(ErrorKind::InvalidData, err))
+    };
+}
+
+fn extract_ndt(creation_time: &str) -> NaiveDateTime {
+    let dt = DateTime::parse_from_rfc3339(creation_time);
+    let dt = dt.unwrap();
+    let ndt: NaiveDateTime = NaiveDateTime::from_timestamp(dt.timestamp(), 0);
+
+    return ndt;
+}
+
+fn get_ffmpeg_date(path: &Path) -> Result<NaiveDateTime, Error> {
+    let inp: Input = ffmpeg::format::input(&path)?;
+    let meta = inp.metadata();
+    let file_creation_time = meta.get("creation_time");
+    let creation_time = if file_creation_time.is_some() {
+        Ok(extract_ndt(file_creation_time.unwrap()))
+    } else {
+        stream_creation_time(inp)
+    };
+
+    return creation_time;
+}
+
+fn stream_creation_time(inp: Input) -> Result<NaiveDateTime, Error> {
+    for stream in inp.streams() {
+        let meta = stream.metadata();
+        let stream_creation_time = meta.get("creation_time");
+        if stream_creation_time.is_some() {
+            return Ok(extract_ndt(stream_creation_time.unwrap()));
         }
     }
+
+    return Err(Error::new(
+        ErrorKind::InvalidData,
+        "Cannot extract date/time from file",
+    ));
 }
 
 fn is_supported_file(file_name: &str) -> bool {
-    file_name.ends_with("jpg")
+    let file_name = String::from(file_name).to_lowercase();
+
+    let result = file_name.ends_with("jpg")
         || file_name.ends_with("jpeg")
         || file_name.ends_with("png")
         || file_name.ends_with("gif")
+        || file_name.ends_with("mp4")
+        || file_name.ends_with("mov")
+        || file_name.ends_with("mp");
+
+    info!("File {} is supported: {}", file_name, result);
+    return result;
 }
 
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
