@@ -3,10 +3,12 @@ pub mod error {
 
     #[derive(Debug, Eq, PartialEq)]
     pub enum PsErrorKind {
-        UNKNOWN,
-        NO_EXIF,
-        FILE_NOT_SUPPORTED,
-        IO_ERROR,
+        Unknown,
+        NoExif,
+        FileNotSupported,
+        IoError,
+        FormatError,
+        NoDateField,
     }
 
     #[derive(Debug, Eq, PartialEq)]
@@ -22,21 +24,26 @@ pub mod error {
     }
 
     impl PsError {
-        pub fn new() -> PsError {
+        pub fn new(kind: PsErrorKind, msg: String) -> PsError {
             return PsError {
-                kind: PsErrorKind::UNKNOWN,
-                msg: "".to_string(),
+                kind,
+                msg,
             };
         }
+    }
 
-        pub fn with_error_kind(&mut self, kind: PsErrorKind) -> &mut PsError {
-            self.kind = kind;
-            return self;
+    impl From<std::io::Error> for PsError {
+        fn from(err: std::io::Error) -> Self {
+            PsError {
+                kind: PsErrorKind::IoError,
+                msg: err.to_string()
+            }
         }
+    }
 
-        pub fn with_message(&mut self, msg: String) -> &mut PsError {
-            self.msg = msg;
-            return self;
+    impl From<ffmpeg::Error> for PsError {
+        fn from(e: ffmpeg::Error) -> Self {
+            return PsError::new(PsErrorKind::FormatError, e.to_string());
         }
     }
 
@@ -44,16 +51,13 @@ pub mod error {
     mod tests {
         use super::*;
         use crate::pserror::error::{PsError, PsErrorKind};
-        use std::ops::DerefMut;
 
         #[test]
         fn test_create_error() {
-            let mut error = PsError::new();
-            error
-                .with_error_kind(PsErrorKind::FILE_NOT_SUPPORTED)
-                .with_message("File not supported".to_string());
+            let error = PsError::new(PsErrorKind::FileNotSupported,
+                                     "File not supported".to_string());
             let expected = PsError {
-                kind: PsErrorKind::FILE_NOT_SUPPORTED,
+                kind: PsErrorKind::FileNotSupported,
                 msg: "File not supported".to_string(),
             };
             assert_eq!(error, expected);

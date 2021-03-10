@@ -3,15 +3,18 @@ mod tests {
     use chrono::NaiveDate;
     use std::io;
     use std::path::Path;
+    use crate::discovery::*;
 
     use crate::{
-        extract_ndt, get_ffmpeg_date, make_file_list, move_photo, update_new_path, Action, Photo,
+        move_photo, update_new_path, Photo,
     };
+    use crate::pserror::error::PsError;
+
 
     #[test]
-    fn test_walk_tree() -> Result<(), io::Error> {
+    fn test_walk_tree() -> Result<(), PsError> {
         let input_dir = String::from("./test-assets/");
-        let file_list = make_file_list(&input_dir)?;
+        let file_list = discovery::make_file_list(&input_dir)?;
 
         // On the current set of test photographs we expect exactly 54
         // photos and 1 video to have valid exif and date.
@@ -77,26 +80,5 @@ mod tests {
         file_diff::diff_files(&mut file, &mut original_file?);
 
         return Ok(());
-    }
-
-    #[test]
-    fn test_extract_ndt() {
-        let dt = "2011-11-05T02:51:16.000000Z";
-
-        assert_eq!(
-            extract_ndt(dt),
-            NaiveDate::from_ymd(2011, 11, 5).and_hms(2, 51, 16)
-        );
-    }
-
-    #[test]
-    fn test_get_ffmpeg_date() {
-        let path = Path::new("./test-assets/mpeg/05112011034.mp4");
-        let dt = get_ffmpeg_date(&path);
-
-        assert_eq!(
-            dt.unwrap(),
-            NaiveDate::from_ymd(2011, 11, 5).and_hms(2, 51, 16)
-        );
     }
 }
