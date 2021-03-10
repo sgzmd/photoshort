@@ -49,7 +49,7 @@ pub mod error {
 
     #[cfg(test)]
     mod tests {
-        use super::*;
+        
         use crate::pserror::error::{PsError, PsErrorKind};
 
         #[test]

@@ -1,10 +1,7 @@
 extern crate clap;
 
-use clap::{App, Arg, SubCommand};
-use std::env;
-
 pub mod configurator {
-    use super::clap::{App, ArgMatches};
+    use super::clap::{App};
     use std::error::Error;
 
     #[derive(PartialEq, Eq, Debug)]
@@ -77,10 +74,10 @@ pub mod configurator {
     }
 
     pub fn print_help() {
-        configure_matchers().print_long_help();
+        configure_matchers().get_matches();
     }
 
-    pub fn get_config(input: Option<&Vec<&str>>) -> Result<Config, Box<Error>> {
+    pub fn get_config(input: Option<&Vec<&str>>) -> Result<Config, Box<dyn Error>> {
         let matches = configure_matchers();
 
         let result = if input.is_some() {
@@ -122,7 +119,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_full_config() -> Result<(), Box<Error>> {
+    fn test_parse_full_config() -> Result<(), Box<dyn Error>> {
         use super::configurator::*;
         let options = vec![
             "CommandName",

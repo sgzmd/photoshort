@@ -4,13 +4,13 @@ use std::io::{Error, ErrorKind};
 use std::path::Path;
 
 use chrono::Datelike;
-use exif::{In, Tag};
-use ffmpeg::format::context::Input;
+
+
 use indicatif::{ProgressBar, ProgressStyle};
 use log::info;
 use log::LevelFilter;
 
-use config::configurator::Config;
+use config::configurator::{Config, get_config};
 use discovery::discovery::make_file_list;
 use photo::Photo;
 
@@ -30,9 +30,10 @@ enum Action {
 }
 
 
-fn main() -> Result<(), Box<std::error::Error>> {
-    let config = config::configurator::get_config(Option::None);
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let config = get_config(Option::None);
     if config.is_err() {
+        config::configurator::print_help();
         return Err(config.err().unwrap());
     }
 
