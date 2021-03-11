@@ -1,15 +1,12 @@
 #[cfg(test)]
 mod tests {
+    use crate::discovery::*;
     use chrono::NaiveDate;
     use std::io;
     use std::path::Path;
-    use crate::discovery::*;
 
-    use crate::{
-        move_photo, update_new_path, Photo,
-    };
     use crate::pserror::error::PsError;
-
+    use crate::{move_photo, photo::PhotoBuilder, update_new_path, Photo};
 
     #[test]
     fn test_walk_tree() -> Result<(), PsError> {
@@ -32,26 +29,25 @@ mod tests {
         use chrono::NaiveDate;
 
         let dest_dir = String::from("TEST_DIR");
+
         let mut photos = vec![
-            Photo {
-                date: NaiveDate::from_ymd(2021, 3, 6).and_hms(16, 47, 13),
-                path: "my/current/path.jpg".to_string(),
-                new_path: None,
-            },
-            Photo {
-                date: NaiveDate::from_ymd(2002, 2, 6).and_hms(16, 47, 13),
-                path: "my/current/another_path.jpg".to_string(),
-                new_path: None,
-            },
+            PhotoBuilder::new()
+                .with_date(NaiveDate::from_ymd(2021, 3, 6).and_hms(16, 47, 13))
+                .with_path("my/current/path.jpg".to_string())
+                .build(),
+            PhotoBuilder::new()
+                .with_date(NaiveDate::from_ymd(2002, 2, 6).and_hms(16, 47, 13))
+                .with_path("my/current/another_path.jpg".to_string())
+                .build(),
         ];
 
         update_new_path(&dest_dir, &mut photos);
         assert_eq!(
-            photos[0].new_path.as_ref().unwrap(),
+            photos[0].new_path().as_ref().unwrap(),
             "TEST_DIR/2021/03/06/path.jpg"
         );
         assert_eq!(
-            photos[1].new_path.as_ref().unwrap(),
+            photos[1].new_path().as_ref().unwrap(),
             "TEST_DIR/2002/02/06/another_path.jpg"
         );
     }
@@ -63,11 +59,11 @@ mod tests {
 
         println!("Created temp directory {}", temp_dir_path);
         let original_path = String::from("./test-assets/jpg/Canon_40D.jpg");
-        let photo = Photo {
-            date: NaiveDate::from_ymd(2008, 5, 30).and_hms(15, 56, 1),
-            path: original_path,
-            new_path: Option::Some(format!("{}/new_path.jpg", temp_dir_path)),
-        };
+        let photo = PhotoBuilder::new()
+            .with_path(original_path)
+            .with_date(NaiveDate::from_ymd(2008, 5, 30).and_hms(15, 56, 1))
+            .with_new_path(format!("{}/new_path.jpg", temp_dir_path))
+            .build();
 
         println!("Moving {:?}", photo);
         assert!(move_photo(
@@ -76,7 +72,7 @@ mod tests {
         )
         .is_ok());
         let mut file = std::fs::File::open(temp_dir_path + "/new_path.jpg")?;
-        let original_file = std::fs::File::open(Path::new(&photo.path));
+        let original_file = std::fs::File::open(Path::new(&photo.path().as_ref().unwrap()));
         file_diff::diff_files(&mut file, &mut original_file?);
 
         return Ok(());

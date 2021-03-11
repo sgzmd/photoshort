@@ -1,23 +1,25 @@
 extern crate ffmpeg_next as ffmpeg;
+#[macro_use]
+extern crate derive_builder;
 
 use std::io::{Error, ErrorKind};
 use std::path::Path;
 
 use chrono::Datelike;
 
-
 use indicatif::{ProgressBar, ProgressStyle};
 use log::info;
 use log::LevelFilter;
 
-use config::configurator::{Config, get_config};
+use crate::pserror::error::*;
+use config::configurator::{get_config, Config};
 use discovery::discovery::make_file_list;
 use photo::Photo;
 
 mod config;
-mod pserror;
 mod discovery;
 mod photo;
+mod pserror;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -28,7 +30,6 @@ enum Action {
     HELP,
     CONVERT(Config),
 }
-
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config = get_config(Option::None);
@@ -82,95 +83,96 @@ fn convert_files(config: &Config) {
             Ok(_) => {
                 info!(
                     "Moved photo {} -> {}",
-                    &photo.path,
-                    &photo.new_path.as_ref().unwrap()
+                    photo.path().as_ref().unwrap(),
+                    photo.new_path().as_ref().unwrap()
                 );
             }
             Err(err) => {
-                info!("Failed to move photo {}: {}", photo.path, err);
+                info!("Failed to move photo {:?}: {}", photo.path(), err);
             }
         }
     }
     bar.finish();
 }
 
-
-
-
-
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
     for photo in photos {
-        let existing_path = Path::new(&photo.path);
+        let existing_path = Path::new(photo.path().as_ref().unwrap());
         match existing_path.file_name() {
             None => {
                 info!(
                     "Path doesn't appear to have a valid file name: {}",
-                    photo.path
+                    photo
+                        .path()
+                        .as_ref()
+                        .unwrap_or(&"BAD_FILE_NAME".to_string())
                 )
             }
             Some(file_name) => {
+                // photo must have valid date at this point.
+                let date = photo.date().unwrap();
                 let path = format!(
                     "{}/{}/{:02}/{:02}/{}",
                     dest_dir,
-                    photo.date.year(),
-                    photo.date.month(),
-                    photo.date.day(),
+                    date.year(),
+                    date.month(),
+                    date.day(),
                     file_name.to_str().unwrap() // should be safe (why?)
                 );
 
-                photo.new_path = Option::Some(path);
+                photo.set_new_path(path);
             }
         }
     }
 }
 
-fn move_photo(photo: &Photo, move_file: bool, dry_run: bool) -> Result<(), Error> {
-    return if photo.new_path.is_none() {
-        Err(Error::new(ErrorKind::InvalidData, "new_path not available"))
-    } else {
-        let new_path = photo.new_path.as_ref().unwrap();
+fn move_photo(photo: &Photo, move_file: bool, dry_run: bool) -> Result<(), PsError> {
+    let new_path = photo.new_path().as_ref().unwrap();
 
-        let full_path = Path::new(new_path);
-        let dir = match full_path.parent() {
-            None => {
-                return Err(Error::new(
-                    ErrorKind::InvalidData,
-                    format!("No parent directory for {}", new_path).as_str(),
-                ));
-            }
-            Some(dir) => dir,
-        };
-
-        if !dir.exists() {
-            match std::fs::create_dir_all(dir) {
-                Err(err) => {
-                    return Err(err.into());
-                }
-                _ => {}
-            }
+    let full_path = Path::new(new_path);
+    let dir = match full_path.parent() {
+        None => {
+            return Err(PsError::new(
+                PsErrorKind::IoError,
+                format!("No parent directory for {}", new_path),
+            ));
         }
-
-        if dry_run {
-            info!("Dry-run, not really copying/moving {}", &photo.path);
-            return Ok(());
-        }
-        if move_file {
-            match std::fs::rename(&photo.path, &new_path) {
-                Ok(_) => {}
-                Err(err) => {
-                    info!("Failed to move file: {}", err);
-                }
-            }
-        } else {
-            match std::fs::copy(&photo.path, &new_path) {
-                Ok(_) => {}
-                Err(err) => {
-                    info!("Failed to copy {} -> {}: {}", &photo.path, &new_path, err);
-                }
-            }
-        }
-        Ok(())
+        Some(dir) => dir,
     };
+
+    if !dir.exists() {
+        match std::fs::create_dir_all(dir) {
+            Err(err) => {
+                return Err(err.into());
+            }
+            _ => {}
+        }
+    }
+
+    if dry_run {
+        info!("Dry-run, not really copying/moving {:?}", photo.path());
+        return Ok(());
+    }
+
+    // If photo doesn't have path() at this point, it's a fatal mistake.
+    let original_path = photo.path().as_ref().unwrap();
+
+    if move_file {
+        match std::fs::rename(original_path, &new_path) {
+            Ok(_) => {}
+            Err(err) => {
+                info!("Failed to move file: {}", err);
+            }
+        }
+    } else {
+        match std::fs::copy(original_path, &new_path) {
+            Ok(_) => {}
+            Err(err) => {
+                info!("Failed to copy {} -> {}: {}", original_path, &new_path, err);
+            }
+        }
+    }
+    Ok(())
 }
 
 #[cfg(test)]

@@ -1,5 +1,6 @@
 pub mod error {
     use std::fmt::{Debug, Formatter, Result};
+    use zip::result::ZipError;
 
     #[derive(Debug, Eq, PartialEq)]
     pub enum PsErrorKind {
@@ -25,10 +26,7 @@ pub mod error {
 
     impl PsError {
         pub fn new(kind: PsErrorKind, msg: String) -> PsError {
-            return PsError {
-                kind,
-                msg,
-            };
+            return PsError { kind, msg };
         }
     }
 
@@ -36,7 +34,7 @@ pub mod error {
         fn from(err: std::io::Error) -> Self {
             PsError {
                 kind: PsErrorKind::IoError,
-                msg: err.to_string()
+                msg: err.to_string(),
             }
         }
     }
@@ -47,15 +45,23 @@ pub mod error {
         }
     }
 
+    impl From<ZipError> for PsError {
+        fn from(e: ZipError) -> Self {
+            return PsError::new(PsErrorKind::FormatError, e.to_string());
+        }
+    }
+
     #[cfg(test)]
     mod tests {
-        
+
         use crate::pserror::error::{PsError, PsErrorKind};
 
         #[test]
         fn test_create_error() {
-            let error = PsError::new(PsErrorKind::FileNotSupported,
-                                     "File not supported".to_string());
+            let error = PsError::new(
+                PsErrorKind::FileNotSupported,
+                "File not supported".to_string(),
+            );
             let expected = PsError {
                 kind: PsErrorKind::FileNotSupported,
                 msg: "File not supported".to_string(),

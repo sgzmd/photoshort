@@ -1,7 +1,7 @@
 extern crate clap;
 
 pub mod configurator {
-    use super::clap::{App};
+    use super::clap::App;
     use std::error::Error;
 
     #[derive(PartialEq, Eq, Debug)]
