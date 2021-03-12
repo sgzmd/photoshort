@@ -51,7 +51,7 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
         let mut photo = discover_file(Path::new(Path::new(temp_file_path)));
         match photo {
             Ok(mut photo) => {
-                update_photo_new_path(&cfg.destination, &mut photo);
+                update_photo_new_path(&cfg.destination, &mut photo, Option::from(file.name()));
                 move_photo(&photo, !cfg.copy, cfg.dry_run);
                 num_files_copied += 1;
             }

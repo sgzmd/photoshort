@@ -93,11 +93,11 @@ fn convert_files(config: &Config) {
 
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
     for photo in photos {
-        update_photo_new_path(dest_dir, photo)
+        update_photo_new_path(dest_dir, photo, Option::None)
     }
 }
 
-fn update_photo_new_path(dest_dir: &String, photo: &mut Photo) {
+fn update_photo_new_path(dest_dir: &String, photo: &mut Photo, original_name: Option<&str>) {
     let existing_path = Path::new(photo.path().as_ref().unwrap());
     match existing_path.file_name() {
         None => {
@@ -110,6 +110,11 @@ fn update_photo_new_path(dest_dir: &String, photo: &mut Photo) {
             )
         }
         Some(file_name) => {
+            let new_name = match original_name {
+                None => { file_name.to_str().unwrap() }
+                Some(original_name) => { original_name }
+            };
+
             // photo must have valid date at this point.
             let date = photo.date().unwrap();
             let path = format!(
@@ -118,7 +123,7 @@ fn update_photo_new_path(dest_dir: &String, photo: &mut Photo) {
                 date.year(),
                 date.month(),
                 date.day(),
-                file_name.to_str().unwrap() // should be safe (why?)
+                new_name // should be safe (why?)
             );
 
             photo.set_new_path(path);
