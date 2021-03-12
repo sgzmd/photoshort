@@ -1,6 +1,5 @@
 pub mod error {
     use std::fmt::{Debug, Formatter, Result};
-    use zip::result::ZipError;
 
     #[derive(Debug, Eq, PartialEq)]
     pub enum PsErrorKind {
@@ -41,12 +40,6 @@ pub mod error {
 
     impl From<ffmpeg::Error> for PsError {
         fn from(e: ffmpeg::Error) -> Self {
-            return PsError::new(PsErrorKind::FormatError, e.to_string());
-        }
-    }
-
-    impl From<ZipError> for PsError {
-        fn from(e: ZipError) -> Self {
             return PsError::new(PsErrorKind::FormatError, e.to_string());
         }
     }
