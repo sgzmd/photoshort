@@ -14,7 +14,7 @@ pub mod discovery {
     use std::fs::File;
     use std::io::{BufReader, Read};
 
-    fn is_supported_file(file_name: &str) -> bool {
+    pub fn is_supported_file(file_name: &str) -> bool {
         let file_name = String::from(file_name).to_lowercase();
 
         let result = file_name.ends_with("jpg")
@@ -123,7 +123,7 @@ pub mod discovery {
         }
     }
 
-    fn discover_file(path: &Path) -> Result<Photo, PsError> {
+    pub fn discover_file(path: &Path) -> Result<Photo, PsError> {
         let file_name = path.file_name();
         if file_name.is_none() {
             return Err(PsError::new(

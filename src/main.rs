@@ -5,8 +5,8 @@ use std::path::Path;
 use chrono::Datelike;
 
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, warn};
 use log::LevelFilter;
+use log::{info, warn};
 
 use crate::pserror::error::*;
 use config::configurator::{get_config, Config};
@@ -16,6 +16,7 @@ mod config;
 mod discovery;
 mod photo;
 mod pserror;
+mod zipfiles;
 
 mod error_messages {
     pub const BOTH_MUST_BE_PROVIDED: &str = "Both --src and --dest must be provided";
@@ -55,64 +56,72 @@ fn convert_files(config: &Config) {
         }
     }
 
-    let file_list = discovery::discovery::list_all_files(&config.source);
-    let mut photo_list = discovery::discovery::process_raw_files(&file_list);
-    info!("Produced a list of {} files", photo_list.len());
-    update_new_path(&config.destination, &mut photo_list);
-    info!("Updated a list of {} files", file_list.len());
-    let bar = ProgressBar::new(file_list.len() as u64);
+    if config.source.ends_with(".zip") {
+        zipfiles::process_zip_file(&config.source, &config);
+    } else {
+        let file_list = discovery::discovery::list_all_files(&config.source);
+        let mut photo_list = discovery::discovery::process_raw_files(&file_list);
+        info!("Produced a list of {} files", photo_list.len());
+        update_new_path(&config.destination, &mut photo_list);
+        info!("Updated a list of {} files", file_list.len());
+        let bar = ProgressBar::new(file_list.len() as u64);
 
-    bar.set_message("Moving/copying files ... ");
-    bar.set_style(
-        ProgressStyle::default_bar()
-            .template("[{elapsed_precise}] {bar:80.green/red} {pos:>7}/{len:7} {msg}")
-            .progress_chars("█░"),
-    );
-    for photo in photo_list {
-        bar.inc(1);
-        match move_photo(&photo, !config.copy, config.dry_run) {
-            Ok(_) => {
-                info!(
-                    "Moved photo {} -> {}",
-                    photo.path().as_ref().unwrap(),
-                    photo.new_path().as_ref().unwrap()
-                );
-            }
-            Err(err) => {
-                warn!("Failed to move photo {:?}: {}", photo.path(), err);
+        bar.set_message("Moving/copying files ... ");
+        bar.set_style(
+            ProgressStyle::default_bar()
+                .template("[{elapsed_precise}] {bar:80.green/red} {pos:>7}/{len:7} {msg}")
+                .progress_chars("█░"),
+        );
+        for photo in photo_list {
+            bar.inc(1);
+            match move_photo(&photo, !config.copy, config.dry_run) {
+                Ok(_) => {
+                    info!(
+                        "Moved photo {} -> {}",
+                        photo.path().as_ref().unwrap(),
+                        photo.new_path().as_ref().unwrap()
+                    );
+                }
+                Err(err) => {
+                    warn!("Failed to move photo {:?}: {}", photo.path(), err);
+                }
             }
         }
+        bar.finish();
     }
-    bar.finish();
 }
 
 fn update_new_path(dest_dir: &String, photos: &mut Vec<Photo>) {
     for photo in photos {
-        let existing_path = Path::new(photo.path().as_ref().unwrap());
-        match existing_path.file_name() {
-            None => {
-                info!(
-                    "Path doesn't appear to have a valid file name: {}",
-                    photo
-                        .path()
-                        .as_ref()
-                        .unwrap_or(&"BAD_FILE_NAME".to_string())
-                )
-            }
-            Some(file_name) => {
-                // photo must have valid date at this point.
-                let date = photo.date().unwrap();
-                let path = format!(
-                    "{}/{}/{:02}/{:02}/{}",
-                    dest_dir,
-                    date.year(),
-                    date.month(),
-                    date.day(),
-                    file_name.to_str().unwrap() // should be safe (why?)
-                );
+        update_photo_new_path(dest_dir, photo)
+    }
+}
 
-                photo.set_new_path(path);
-            }
+fn update_photo_new_path(dest_dir: &String, photo: &mut Photo) {
+    let existing_path = Path::new(photo.path().as_ref().unwrap());
+    match existing_path.file_name() {
+        None => {
+            info!(
+                "Path doesn't appear to have a valid file name: {}",
+                photo
+                    .path()
+                    .as_ref()
+                    .unwrap_or(&"BAD_FILE_NAME".to_string())
+            )
+        }
+        Some(file_name) => {
+            // photo must have valid date at this point.
+            let date = photo.date().unwrap();
+            let path = format!(
+                "{}/{}/{:02}/{:02}/{}",
+                dest_dir,
+                date.year(),
+                date.month(),
+                date.day(),
+                file_name.to_str().unwrap() // should be safe (why?)
+            );
+
+            photo.set_new_path(path);
         }
     }
 }

@@ -1,5 +1,6 @@
 pub mod error {
     use std::fmt::{Debug, Formatter, Result};
+    use zip::result::ZipError;
 
     #[derive(Debug, Eq, PartialEq)]
     pub enum PsErrorKind {
@@ -9,6 +10,7 @@ pub mod error {
         IoError,
         FormatError,
         NoDateField,
+        ZipError,
     }
 
     #[derive(Debug, Eq, PartialEq)]
@@ -33,6 +35,15 @@ pub mod error {
         fn from(err: std::io::Error) -> Self {
             PsError {
                 kind: PsErrorKind::IoError,
+                msg: err.to_string(),
+            }
+        }
+    }
+
+    impl From<ZipError> for PsError {
+        fn from(err: ZipError) -> Self {
+            PsError {
+                kind: PsErrorKind::ZipError,
                 msg: err.to_string(),
             }
         }
