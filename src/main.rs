@@ -1,19 +1,15 @@
 extern crate ffmpeg_next as ffmpeg;
-#[macro_use]
-extern crate derive_builder;
 
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 
 use chrono::Datelike;
 
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, warn};
 use log::LevelFilter;
 
 use crate::pserror::error::*;
 use config::configurator::{get_config, Config};
-use discovery::discovery::make_file_list;
 use photo::Photo;
 
 mod config;
@@ -48,12 +44,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn convert_files(config: &Config) {
-    let file_list = make_file_list(&config.source);
-    if file_list.is_err() {
-        info!("Error building list of files: {:?}", file_list.err());
-        return;
-    }
-
     if config.logfile.is_some() {
         let logfile = config.logfile.as_ref().unwrap();
         match simple_logging::log_to_file(logfile, LevelFilter::Info) {
@@ -65,9 +55,10 @@ fn convert_files(config: &Config) {
         }
     }
 
-    let mut file_list = file_list.unwrap();
-    info!("Produced a list of {} files", file_list.len());
-    update_new_path(&config.destination, &mut file_list);
+    let file_list = discovery::discovery::list_all_files(&config.source);
+    let mut photo_list = discovery::discovery::process_raw_files(&file_list);
+    info!("Produced a list of {} files", photo_list.len());
+    update_new_path(&config.destination, &mut photo_list);
     info!("Updated a list of {} files", file_list.len());
     let bar = ProgressBar::new(file_list.len() as u64);
 
@@ -77,7 +68,7 @@ fn convert_files(config: &Config) {
             .template("[{elapsed_precise}] {bar:80.green/red} {pos:>7}/{len:7} {msg}")
             .progress_chars("█░"),
     );
-    for photo in file_list {
+    for photo in photo_list {
         bar.inc(1);
         match move_photo(&photo, !config.copy, config.dry_run) {
             Ok(_) => {
@@ -88,7 +79,7 @@ fn convert_files(config: &Config) {
                 );
             }
             Err(err) => {
-                info!("Failed to move photo {:?}: {}", photo.path(), err);
+                warn!("Failed to move photo {:?}: {}", photo.path(), err);
             }
         }
     }

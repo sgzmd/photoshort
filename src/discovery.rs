@@ -4,12 +4,12 @@ pub mod discovery {
 
     use chrono::{DateTime, NaiveDateTime};
     use indicatif::{ProgressBar, ProgressStyle};
-    use log::info;
+    use log::{info, warn};
     use std::path::Path;
-    use walkdir::WalkDir;
+    use walkdir::{DirEntry, WalkDir};
 
     use crate::photo::PhotoBuilder;
-    use exif::{In, Tag};
+    use exif::{Error, Exif, In, Tag};
     use ffmpeg::format::context::Input;
     use std::fs::File;
     use std::io::{BufReader, Read};
@@ -23,81 +23,69 @@ pub mod discovery {
             || file_name.ends_with("gif")
             || file_name.ends_with("mp4")
             || file_name.ends_with("mov")
-            || file_name.ends_with("mp")
-            || file_name.ends_with("zip");
+            || file_name.ends_with("mp");
 
         info!("File {} is supported: {}", file_name, result);
         return result;
     }
 
-    pub fn make_file_list(input_dir: &String) -> Result<Vec<Photo>, PsError> {
-        info!("Make file list {}", line!());
-        let mut result: Vec<Photo> = Vec::new();
+    fn is_zip_file(file_name: &str) -> bool {
+        return String::from(file_name).to_lowercase().ends_with(".zip");
+    }
 
-        info!("Starting to walk the file tree..");
-        let pb = ProgressBar::new_spinner();
-        pb.enable_steady_tick(120);
-        pb.set_style(
-            ProgressStyle::default_spinner()
-                .tick_strings(&["/", "-", "\\", "|", "✅"])
-                .template("{spinner:.blue} {msg}"),
-        );
-        pb.set_message("Reading list of files, might take a while ...");
-        let all_entries: Vec<Result<walkdir::DirEntry, walkdir::Error>> =
-            WalkDir::new(input_dir).into_iter().collect();
-        pb.finish_with_message("Done");
+    /// Returns all physical files in the input_dir which are supported.
+    pub fn list_all_files(input_dir: &str) -> Vec<String> {
+        return WalkDir::new(input_dir)
+            .into_iter()
+            // Can we unwrap result?
+            .filter(|e| e.is_ok())
+            .map(|e| e.unwrap())
+            // Mapping path to string
+            .map(|e| e.into_path().into_os_string().into_string().unwrap())
+            // Filtering out unsupported files
+            .filter(|e| is_supported_file(e) | is_zip_file(e))
+            .collect();
+    }
 
-        let bar = ProgressBar::new(all_entries.len() as u64);
+    pub fn process_raw_files(files: &Vec<String>) -> Vec<Photo> {
+        let bar = ProgressBar::new(files.len() as u64);
         bar.set_message("Collecting information about files....");
         bar.set_style(
             ProgressStyle::default_bar()
                 .template("[{elapsed_precise}] {bar:80.cyan/blue} {pos:>7}/{len:7} {msg}")
                 .progress_chars("█░"),
         );
-        for entry in all_entries {
-            bar.inc(1);
-            match entry {
-                Err(_) => {
-                    continue;
-                }
-                _ => {}
-            };
-            let entry = entry.unwrap();
-            let path = entry.path();
-            if path.is_dir() {
-                info!("Skipping directory {:?}", path.to_str());
-                continue;
-            }
 
-            if !is_supported_file(entry.file_name().to_str().unwrap_or("")) {
-                continue;
-            }
-
-            let photo = discover_file(path);
-            match photo {
+        let mut photos: Vec<Photo> = Vec::new();
+        for file in files {
+            let path = Path::new(file);
+            let result = discover_file(path);
+            match result {
                 Ok(photo) => {
-                    result.push(photo);
+                    info!("Adding file to collection: {:?}", photo);
+                    photos.push(photo);
                 }
                 Err(err) => {
-                    info!(
-                        "Error processing file {}: {:?}",
-                        path.to_str().unwrap(),
-                        err
-                    )
+                    warn!("Couldn't discover file {:?} because of {:?}", path, err);
                 }
             }
         }
-        bar.finish();
 
-        return Ok(result);
+        bar.finish();
+        return photos;
     }
 
     fn extract_picture_exif(file: &File, path: &Path) -> Result<Photo, PsError> {
         let mut bufreader = std::io::BufReader::new(file);
         let exifreader = exif::Reader::new();
-        let exif = exifreader.read_from_container(&mut bufreader);
+        let exif: Result<Exif, Error> = exifreader.read_from_container(&mut bufreader);
 
-        return match exif {
+        let photo_path = path.clone().to_str();
+        return match_exif(exif, photo_path);
+    }
+
+    fn match_exif(exif: Result<Exif, Error>, photo_path: Option<&str>) -> Result<Photo, PsError> {
+        match exif {
             Ok(exif) => {
                 // TODO(sgzmd): we have to possibly use DateTimeDigitized for, e.g. scanned photos.
                 // Unclear how much value this will add, so leaving it for later.
@@ -112,8 +100,7 @@ pub mod discovery {
                     let parsed = NaiveDateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S");
                     match parsed {
                         Ok(ndt) => {
-                            let photo_path = path.clone().to_str().unwrap().to_string();
-                            let photo = Photo::from(photo_path, ndt);
+                            let photo = Photo::from(photo_path.unwrap().to_string(), ndt);
                             return Ok(photo);
                         }
                         Err(_err) => Err(PsError::new(
@@ -124,16 +111,16 @@ pub mod discovery {
                 } else {
                     Err(PsError::new(
                         PsErrorKind::NoExif,
-                        format!("No exif field for {:?}", path),
+                        format!("No exif field for {:?}", photo_path),
                     ))
                 }
             }
             // Ignoring, will try ffmpeg later
             Err(e) => Err(PsError::new(
                 PsErrorKind::FormatError,
-                format!("Error reading EXIF: {:?}", path),
+                format!("Error reading EXIF: {:?} {:?}", photo_path, e),
             )),
-        };
+        }
     }
 
     fn discover_file(path: &Path) -> Result<Photo, PsError> {
@@ -152,6 +139,8 @@ pub mod discovery {
             return Ok(exif.unwrap());
         }
 
+        info!("No regular image exif in {:?}, trying ffmpeg...", path);
+
         // okay let's try ffmpeg
         let ffmpeg_date = get_ffmpeg_date(&path);
         return if ffmpeg_date.is_ok() {
@@ -164,33 +153,10 @@ pub mod discovery {
             info!("Couldn't get ffmpeg date from {:?}", path);
             return Err(PsError::new(
                 PsErrorKind::NoDateField,
-                format!("Couldn't get ffmpeg date from {:?}", path),
+                format!("No EXIF of any kind in {:}", path.to_str().unwrap()),
             ));
         };
     }
-
-    // fn discover_zip_file(path: &Path) -> Result<(), PsError> {
-    //   let file = std::fs::File::open(path)?;
-    //   let mut archive = zip::ZipArchive::new(file).unwrap();
-    //   // for i in 0..archive.len() {
-    //   //   let zf = archive.by_index(0)?;
-    //   //   if zf.is_file() {
-    //   //     extract_picture_exif(&zf, zf.mangled_name().as_path());
-    //   //   }
-    //   // }
-    //
-    //     for file_name in archive.file_names() {
-    //         let mut zf = archive.by_name(file_name)?;
-    //         let exifreader = exif::Reader::new();
-    //
-    //         exifreader.read_from_container(&mut zf);
-    //
-    //         let br = BufReader::new(&zf);
-    //     }
-    //
-    //
-    //   Ok(());
-    // }
 
     fn extract_ndt(creation_time: &str) -> NaiveDateTime {
         let dt = DateTime::parse_from_rfc3339(creation_time);
@@ -232,8 +198,15 @@ pub mod discovery {
     mod tests {
         use super::*;
         use chrono::NaiveDate;
+        use log::LevelFilter;
+
+        pub fn setup() {
+            simple_logging::log_to_stderr(LevelFilter::Info);
+        }
 
         fn test_is_supported_file() {
+            setup();
+
             assert!(is_supported_file("filename.jpg"));
             assert!(is_supported_file("filename.png"));
             assert!(is_supported_file("filename.mp4"));
@@ -243,6 +216,8 @@ pub mod discovery {
 
         #[test]
         fn test_extract_ndt() {
+            setup();
+
             let dt = "2011-11-05T02:51:16.000000Z";
 
             assert_eq!(
@@ -253,6 +228,8 @@ pub mod discovery {
 
         #[test]
         fn test_get_ffmpeg_date() {
+            setup();
+
             let path = Path::new("./test-assets/mpeg/05112011034.mp4");
             let dt = get_ffmpeg_date(&path);
 
@@ -260,6 +237,27 @@ pub mod discovery {
                 dt.unwrap(),
                 NaiveDate::from_ymd(2011, 11, 5).and_hms(2, 51, 16)
             );
+        }
+
+        #[test]
+        fn test_list_all_files() {
+            setup();
+
+            let all_files = list_all_files("./test-assets");
+            assert_eq!(all_files.len(), 92);
+        }
+
+        #[test]
+        fn test_process_raw_files() {
+            setup();
+
+            let supported_files: Vec<String> = list_all_files("./test-assets")
+                .into_iter()
+                .filter(|e| is_supported_file(e))
+                .collect();
+
+            let photos = process_raw_files(&supported_files);
+            assert_eq!(photos.len(), 55);
         }
     }
 }

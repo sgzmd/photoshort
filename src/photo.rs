@@ -1,5 +1,6 @@
 use chrono::NaiveDateTime;
 use std::convert::AsRef;
+use std::path::Path;
 
 #[derive(Default, Debug, Clone, Eq, PartialEq)]
 pub struct Photo {
@@ -71,6 +72,12 @@ impl PhotoBuilder {
         return self;
     }
 
+    pub fn with_os_path(&mut self, path: &Path) -> &mut PhotoBuilder {
+        let str_path: String = path.to_str().unwrap().to_string();
+        self.photo.set_path(str_path);
+        return self;
+    }
+
     pub fn with_path(&mut self, path: String) -> &mut PhotoBuilder {
         self.photo.set_path(path);
         return self;
@@ -83,5 +90,20 @@ impl PhotoBuilder {
 
     pub fn build(&self) -> Photo {
         self.photo.clone()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::photo::PhotoBuilder;
+    use std::path::Path;
+
+    #[test]
+    fn test_with_os_path() {
+        let path = Path::new("/path/to/file");
+        let mut pb = PhotoBuilder::new();
+        let photo = pb.with_os_path(path).build();
+
+        assert_eq!(Path::new(&photo.path().as_ref().unwrap()), path);
     }
 }

@@ -9,22 +9,6 @@ mod tests {
     use crate::{move_photo, photo::PhotoBuilder, update_new_path, Photo};
 
     #[test]
-    fn test_walk_tree() -> Result<(), PsError> {
-        let input_dir = String::from("./test-assets/");
-        let file_list = discovery::make_file_list(&input_dir)?;
-
-        // On the current set of test photographs we expect exactly 54
-        // photos and 1 video to have valid exif and date.
-        assert_eq!(file_list.len(), 55);
-
-        let _output = file_list.iter().fold(String::new(), |acc, arg| {
-            acc + format!("{:?}\n", arg).as_str()
-        });
-
-        return Ok(());
-    }
-
-    #[test]
     fn test_update_path() {
         use chrono::NaiveDate;
 
