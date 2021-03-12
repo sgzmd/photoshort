@@ -111,8 +111,8 @@ fn update_photo_new_path(dest_dir: &String, photo: &mut Photo, original_name: Op
         }
         Some(file_name) => {
             let new_name = match original_name {
-                None => { file_name.to_str().unwrap() }
-                Some(original_name) => { original_name }
+                None => file_name.to_str().unwrap(),
+                Some(original_name) => original_name,
             };
 
             // photo must have valid date at this point.

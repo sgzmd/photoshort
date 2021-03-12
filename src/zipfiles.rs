@@ -5,12 +5,12 @@ use crate::photo::Photo;
 use crate::pserror::error::PsError;
 use crate::{move_photo, update_photo_new_path};
 use filepath::FilePath;
+use indicatif::{ProgressBar, ProgressStyle};
 use log::info;
 use std::fs::File;
 use std::ops::Deref;
 use std::path::Path;
 use tempfile::NamedTempFile;
-use indicatif::{ProgressBar, ProgressStyle};
 
 pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
     let file = File::open(Path::new(file_path))?;
@@ -24,7 +24,6 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
             .template("[{elapsed_precise}] {bar:80.green/red} {pos:>7}/{len:7} {msg}")
             .progress_chars("█░"),
     );
-
 
     let mut num_files_copied = 0;
     for i in 0..zf.len() {
@@ -51,7 +50,17 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
         let mut photo = discover_file(Path::new(Path::new(temp_file_path)));
         match photo {
             Ok(mut photo) => {
-                update_photo_new_path(&cfg.destination, &mut photo, Option::from(file.name()));
+                update_photo_new_path(
+                    &cfg.destination,
+                    &mut photo,
+                    Option::from(
+                        Path::new(file.name())
+                            .file_name()
+                            .unwrap()
+                            .to_str()
+                            .unwrap(),
+                    ),
+                );
                 move_photo(&photo, !cfg.copy, cfg.dry_run);
                 num_files_copied += 1;
             }
