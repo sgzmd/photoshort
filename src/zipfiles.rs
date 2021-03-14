@@ -75,7 +75,7 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
                 if move_photo(
                     &photo,
                     // note that copy/move flag is ignored here as we
-                    // are creating temp file which we move laterg
+                    // are creating temp file which we move later
                     true,
                     cfg.dry_run,
                 ).is_err() {
