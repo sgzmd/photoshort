@@ -144,17 +144,16 @@ pub mod discovery {
         // okay let's try ffmpeg
         let ffmpeg_date = get_ffmpeg_date(&path);
         return if ffmpeg_date.is_ok() {
-            let mut photo = Photo::new();
             Ok(Photo::from(
                 path.to_str().unwrap().to_string(),
                 ffmpeg_date.unwrap(),
             ))
         } else {
             info!("Couldn't get ffmpeg date from {:?}", path);
-            return Err(PsError::new(
+            Err(PsError::new(
                 PsErrorKind::NoDateField,
                 format!("No EXIF of any kind in {:}", path.to_str().unwrap()),
-            ));
+            ))
         };
     }
 
@@ -172,13 +171,11 @@ pub mod discovery {
         let file_creation_time = meta.get("creation_time");
         let creation_time = if file_creation_time.is_some() {
             let creation_time = file_creation_time.unwrap();
-            info!("Extract datetime from container: {}", creation_time);
-            Ok(extract_ndt(creation_time))
+            info!("Extracted datetime from container: {}", creation_time);
+            return Ok(extract_ndt(creation_time));
         } else {
-            stream_creation_time(inp)
+            return stream_creation_time(inp);
         };
-
-        return creation_time;
     }
 
     fn stream_creation_time(inp: Input) -> Result<NaiveDateTime, PsError> {
