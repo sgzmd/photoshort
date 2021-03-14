@@ -1,16 +1,13 @@
 use crate::config::configurator::Config;
 use crate::discovery::discovery;
 use crate::discovery::discovery::discover_file;
-use crate::photo::Photo;
 use crate::pserror::error::PsError;
 use crate::{move_photo, update_photo_new_path};
-use filepath::FilePath;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, warn};
 use std::fs::File;
-use std::ops::Deref;
 use std::path::Path;
-use tempfile::NamedTempFile;
+use tempfile::TempDir;
 
 pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
     let file = File::open(Path::new(file_path))?;
@@ -26,6 +23,8 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
     );
 
     let mut num_files_copied = 0;
+    let temp_dir = TempDir::new()?;
+    let temp_dir_path = temp_dir.path();
     for i in 0..zf.len() {
         bar.inc(1);
         let mut file = zf.by_index(i)?;
@@ -34,35 +33,56 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
             continue;
         }
 
-        let mut temp_file = NamedTempFile::new()?;
+        let temp_file_path = format!(
+            "{}/{}",
+            temp_dir_path.to_str().unwrap(),
+            file.mangled_name().file_name().unwrap().to_str().unwrap()
+        );
+        let temp_file_path = Path::new(temp_file_path.as_str());
 
-        let (mut temp_file, temp_path) = temp_file.into_parts();
-        let temp_file_path = temp_path.to_str().unwrap(); // unwrap shouldn't fail.
+        let mut temp_file = std::fs::File::create(temp_file_path);
+
+        if temp_file.is_err() {
+            warn!(
+                "Couldn't open temp file {} for writing because of {:?}",
+                temp_file_path.to_str().unwrap(),
+                temp_file.err().unwrap()
+            );
+            continue;
+        }
+
+        let mut temp_file = temp_file.unwrap();
         let written = std::io::copy(&mut file, &mut temp_file)?;
 
         info!(
             "Extracted {} -> {}, {} bytes written",
             file.name(),
-            temp_file_path,
+            temp_file_path.to_str().unwrap(),
             written
         );
 
-        let mut photo = discover_file(Path::new(Path::new(temp_file_path)));
+        let photo = discover_file(temp_file_path);
+        let new_path = Option::from(
+            Path::new(file.name())
+                .file_name()
+                .unwrap()
+                .to_str()
+                .unwrap(),
+        );
         match photo {
             Ok(mut photo) => {
-                update_photo_new_path(
-                    &cfg.destination,
-                    &mut photo,
-                    Option::from(
-                        Path::new(file.name())
-                            .file_name()
-                            .unwrap()
-                            .to_str()
-                            .unwrap(),
-                    ),
-                );
-                move_photo(&photo, !cfg.copy, cfg.dry_run);
-                num_files_copied += 1;
+                update_photo_new_path(&cfg.destination, &mut photo, new_path);
+                if move_photo(
+                    &photo,
+                    // note that copy/move flag is ignored here as we
+                    // are creating temp file which we move laterg
+                    true,
+                    cfg.dry_run,
+                ).is_err() {
+                    warn!("Failed to move file to {}", new_path.unwrap());
+                } else {
+                    num_files_copied += 1;
+                }
             }
             Err(err) => {
                 info!("Couldn't discover file {}: {:?}", file.name(), err);

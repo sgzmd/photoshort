@@ -1,0 +1,329 @@
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets is supported: false
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/mpeg is supported: false
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/mpeg/05112011034.mp4 is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/xmp is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/xmp/bluesquare.jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/xmp/no_exif.jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/readme is supported: false
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation is supported: false
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_7.jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_7.jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_1.jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_4.jpg is supported: true
+[00:00:00.000] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/readme is supported: false
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_5.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_3.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_1.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_8.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_4.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_2.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_8.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/portrait_6.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_6.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_2.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_5.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/orientation/landscape_3.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/pentax_k10d.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/canon_digital_ixus_400.jpg is supported: true
+[00:00:00.001] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests is supported: false
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/36-memory_error.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/67-0_length_string.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/87_oserror.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/45-gps_ifd.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/42_indexerror.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/11-tests.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/33-type_error.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/32-lens_data.jpeg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/46_unicodeencodeerror.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/22-canon_tags.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/28-hex_value.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/30-type_error.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/tests/35-empty.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/panasonic_dmc-fz30.jpg is supported: true
+[00:00:00.002] (7f95cdd103c0) INFO   File ./test-assets/jpg/long_description.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/ricoh_caplio_rr330.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/mobile is supported: false
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/mobile/jolla.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/fujifilm_finepix6900zoom.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/corrupted.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/fujifilm_finepix_e500.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps is supported: false
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0021.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/readme is supported: false
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0029.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0038.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0027.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0040.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0010.jpg is supported: true
+[00:00:00.003] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0042.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0025.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/gps/dscn0012.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/reconyx_hc500_hyperfire.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/nikon_coolpix_p1.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/samsung_digimax_i50_mp3.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/canon_40d.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/.ds_store is supported: false
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/sony_hdr-hc3.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/konica_minolta_dimage_z3.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/nikon_d70.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/hdr is supported: false
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/hdr/iphone_hdr_no.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/hdr/readme is supported: false
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/hdr/canon_hdr_no.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/hdr/iphone_hdr_yes.jpg is supported: true
+[00:00:00.004] (7f95cdd103c0) INFO   File ./test-assets/jpg/hdr/canon_hdr_yes.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/canon_40d_photoshop_import.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/painttool_sample.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org is supported: false
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/nikon-e950.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/olympus-c960.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/sony-d700.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/readme is supported: false
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/sanyo-vpcsx550.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/sony-cybershot.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/ricoh-rdc5300.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/fujifilm-dx10.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/fujifilm-finepix40i.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/sanyo-vpcg250.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/fujifilm-mx1700.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/olympus-d320l.jpg is supported: true
+[00:00:00.005] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/sony-powershota5.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/kodak-dc210.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/canon-ixus.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/exif-org/kodak-dc240.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid is supported: false
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image01980.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image01088.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/readme is supported: false
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image02206.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image00971.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image01713.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image01137.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/invalid/image01551.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/kodak_cx7530.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/canon_powershot_s40.jpg is supported: true
+[00:00:00.006] (7f95cdd103c0) INFO   File ./test-assets/jpg/olympus_c8080wz.jpg is supported: true
+[00:00:00.007] (7f95cdd103c0) INFO   File ./test-assets/jpg/wwl_(polaroid)_ion230.jpg is supported: true
+[00:00:00.007] (7f95cdd103c0) INFO   File ./test-assets/.ds_store is supported: false
+[00:00:00.009] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/mpeg/05112011034.mp4", trying ffmpeg...
+[00:00:00.012] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2011-11-05T02:51:16), path: Some("./test-assets/mpeg/05112011034.mp4"), new_path: None }
+[00:00:00.012] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg", trying ffmpeg...
+[00:00:00.012] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg"
+[00:00:00.012] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg" }
+[00:00:00.012] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/xmp", trying ffmpeg...
+[00:00:00.012] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/xmp"
+[00:00:00.013] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/xmp" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/xmp" }
+[00:00:00.013] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/xmp/BlueSquare.jpg", trying ffmpeg...
+[00:00:00.013] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/xmp/BlueSquare.jpg"
+[00:00:00.013] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/xmp/BlueSquare.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/xmp/BlueSquare.jpg" }
+[00:00:00.014] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/xmp/no_exif.jpg", trying ffmpeg...
+[00:00:00.015] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/xmp/no_exif.jpg"
+[00:00:00.015] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/xmp/no_exif.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/xmp/no_exif.jpg" }
+[00:00:00.015] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_7.jpg", trying ffmpeg...
+[00:00:00.016] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_7.jpg"
+[00:00:00.016] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_7.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_7.jpg" }
+[00:00:00.016] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_7.jpg", trying ffmpeg...
+[00:00:00.016] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_7.jpg"
+[00:00:00.017] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_7.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_7.jpg" }
+[00:00:00.017] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_1.jpg", trying ffmpeg...
+[00:00:00.017] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_1.jpg"
+[00:00:00.018] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_1.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_1.jpg" }
+[00:00:00.018] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_4.jpg", trying ffmpeg...
+[00:00:00.018] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_4.jpg"
+[00:00:00.018] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_4.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_4.jpg" }
+[00:00:00.019] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_5.jpg", trying ffmpeg...
+[00:00:00.019] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_5.jpg"
+[00:00:00.019] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_5.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_5.jpg" }
+[00:00:00.020] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_3.jpg", trying ffmpeg...
+[00:00:00.020] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_3.jpg"
+[00:00:00.020] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_3.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_3.jpg" }
+[00:00:00.020] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_1.jpg", trying ffmpeg...
+[00:00:00.021] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_1.jpg"
+[00:00:00.021] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_1.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_1.jpg" }
+[00:00:00.021] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_8.jpg", trying ffmpeg...
+[00:00:00.022] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_8.jpg"
+[00:00:00.022] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_8.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_8.jpg" }
+[00:00:00.022] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_4.jpg", trying ffmpeg...
+[00:00:00.023] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_4.jpg"
+[00:00:00.023] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_4.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_4.jpg" }
+[00:00:00.023] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_2.jpg", trying ffmpeg...
+[00:00:00.023] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_2.jpg"
+[00:00:00.024] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_2.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_2.jpg" }
+[00:00:00.024] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_8.jpg", trying ffmpeg...
+[00:00:00.024] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_8.jpg"
+[00:00:00.025] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_8.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_8.jpg" }
+[00:00:00.025] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/portrait_6.jpg", trying ffmpeg...
+[00:00:00.025] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/portrait_6.jpg"
+[00:00:00.025] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/portrait_6.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/portrait_6.jpg" }
+[00:00:00.026] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_6.jpg", trying ffmpeg...
+[00:00:00.026] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_6.jpg"
+[00:00:00.026] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_6.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_6.jpg" }
+[00:00:00.026] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_2.jpg", trying ffmpeg...
+[00:00:00.027] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_2.jpg"
+[00:00:00.027] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_2.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_2.jpg" }
+[00:00:00.027] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_5.jpg", trying ffmpeg...
+[00:00:00.028] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_5.jpg"
+[00:00:00.028] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_5.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_5.jpg" }
+[00:00:00.028] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/orientation/landscape_3.jpg", trying ffmpeg...
+[00:00:00.029] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/orientation/landscape_3.jpg"
+[00:00:00.029] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/orientation/landscape_3.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/orientation/landscape_3.jpg" }
+[00:00:00.029] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-05-04T16:47:24), path: Some("./test-assets/jpg/Pentax_K10D.jpg"), new_path: None }
+[00:00:00.029] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2004-08-27T13:52:55), path: Some("./test-assets/jpg/Canon_DIGITAL_IXUS_400.jpg"), new_path: None }
+[00:00:00.030] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2002-04-21T00:30:33), path: Some("./test-assets/jpg/tests/36-memory_error.jpg"), new_path: None }
+[00:00:00.030] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/tests/67-0_length_string.jpg", trying ffmpeg...
+[00:00:00.031] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/tests/67-0_length_string.jpg"
+[00:00:00.031] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/tests/67-0_length_string.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/tests/67-0_length_string.jpg" }
+[00:00:00.031] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2005-12-14T14:39:47), path: Some("./test-assets/jpg/tests/87_OSError.jpg"), new_path: None }
+[00:00:00.031] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/tests/45-gps_ifd.jpg", trying ffmpeg...
+[00:00:00.032] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/tests/45-gps_ifd.jpg"
+[00:00:00.032] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/tests/45-gps_ifd.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/tests/45-gps_ifd.jpg" }
+[00:00:00.032] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2014-08-23T13:05:43), path: Some("./test-assets/jpg/tests/42_IndexError.jpg"), new_path: None }
+[00:00:00.033] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2007-09-03T16:03:45), path: Some("./test-assets/jpg/tests/11-tests.jpg"), new_path: None }
+[00:00:00.033] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-05-25T19:31:26), path: Some("./test-assets/jpg/tests/33-type_error.jpg"), new_path: None }
+[00:00:00.033] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2012-07-14T16:30:12), path: Some("./test-assets/jpg/tests/32-lens_data.jpeg"), new_path: None }
+[00:00:00.033] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2012-06-22T19:52:31), path: Some("./test-assets/jpg/tests/46_UnicodeEncodeError.jpg"), new_path: None }
+[00:00:00.034] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2007-11-29T16:16:21), path: Some("./test-assets/jpg/tests/22-canon_tags.jpg"), new_path: None }
+[00:00:00.034] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-08-21T14:53:03), path: Some("./test-assets/jpg/tests/28-hex_value.jpg"), new_path: None }
+[00:00:00.034] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/tests/30-type_error.jpg", trying ffmpeg...
+[00:00:00.035] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/tests/30-type_error.jpg"
+[00:00:00.035] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/tests/30-type_error.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/tests/30-type_error.jpg" }
+[00:00:00.035] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2005-07-19T18:25:29), path: Some("./test-assets/jpg/tests/35-empty.jpg"), new_path: None }
+[00:00:00.036] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-07-16T11:33:20), path: Some("./test-assets/jpg/Panasonic_DMC-FZ30.jpg"), new_path: None }
+[00:00:00.036] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/long_description.jpg", trying ffmpeg...
+[00:00:00.036] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/long_description.jpg"
+[00:00:00.036] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/long_description.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/long_description.jpg" }
+[00:00:00.037] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2004-08-31T19:52:58), path: Some("./test-assets/jpg/Ricoh_Caplio_RR330.jpg"), new_path: None }
+[00:00:00.037] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2014-09-21T16:00:56), path: Some("./test-assets/jpg/mobile/jolla.jpg"), new_path: None }
+[00:00:00.037] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2001-02-19T06:40:05), path: Some("./test-assets/jpg/Fujifilm_FinePix6900ZOOM.jpg"), new_path: None }
+[00:00:00.038] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2015-09-08T11:02:17), path: Some("./test-assets/jpg/corrupted.jpg"), new_path: None }
+[00:00:00.038] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2006-08-17T09:24:48), path: Some("./test-assets/jpg/Fujifilm_FinePix_E500.jpg"), new_path: None }
+[00:00:00.038] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:38:20), path: Some("./test-assets/jpg/gps/DSCN0021.jpg"), new_path: None }
+[00:00:00.038] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:46:53), path: Some("./test-assets/jpg/gps/DSCN0029.jpg"), new_path: None }
+[00:00:00.039] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:52:15), path: Some("./test-assets/jpg/gps/DSCN0038.jpg"), new_path: None }
+[00:00:00.039] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:44:01), path: Some("./test-assets/jpg/gps/DSCN0027.jpg"), new_path: None }
+[00:00:00.039] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:55:37), path: Some("./test-assets/jpg/gps/DSCN0040.jpg"), new_path: None }
+[00:00:00.039] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:28:39), path: Some("./test-assets/jpg/gps/DSCN0010.jpg"), new_path: None }
+[00:00:00.040] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T17:00:07), path: Some("./test-assets/jpg/gps/DSCN0042.jpg"), new_path: None }
+[00:00:00.040] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:43:21), path: Some("./test-assets/jpg/gps/DSCN0025.jpg"), new_path: None }
+[00:00:00.040] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-10-22T16:29:49), path: Some("./test-assets/jpg/gps/DSCN0012.jpg"), new_path: None }
+[00:00:00.040] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/Reconyx_HC500_Hyperfire.jpg", trying ffmpeg...
+[00:00:00.042] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/Reconyx_HC500_Hyperfire.jpg"
+[00:00:00.042] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/Reconyx_HC500_Hyperfire.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/Reconyx_HC500_Hyperfire.jpg" }
+[00:00:00.042] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-03-07T09:55:46), path: Some("./test-assets/jpg/Nikon_COOLPIX_P1.jpg"), new_path: None }
+[00:00:00.042] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2006-08-15T17:50:57), path: Some("./test-assets/jpg/Samsung_Digimax_i50_MP3.jpg"), new_path: None }
+[00:00:00.043] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-05-30T15:56:01), path: Some("./test-assets/jpg/Canon_40D.jpg"), new_path: None }
+[00:00:00.043] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2007-06-15T04:42:32), path: Some("./test-assets/jpg/Sony_HDR-HC3.jpg"), new_path: None }
+[00:00:00.043] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2005-03-10T15:10:48), path: Some("./test-assets/jpg/Konica_Minolta_DiMAGE_Z3.jpg"), new_path: None }
+[00:00:00.043] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2008-03-15T09:52:01), path: Some("./test-assets/jpg/Nikon_D70.jpg"), new_path: None }
+[00:00:00.044] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2015-04-10T20:12:23), path: Some("./test-assets/jpg/hdr/iphone_hdr_NO.jpg"), new_path: None }
+[00:00:00.044] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2015-02-09T22:47:44), path: Some("./test-assets/jpg/hdr/canon_hdr_NO.jpg"), new_path: None }
+[00:00:00.044] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2015-04-10T20:12:23), path: Some("./test-assets/jpg/hdr/iphone_hdr_YES.jpg"), new_path: None }
+[00:00:00.045] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2015-02-09T22:48:10), path: Some("./test-assets/jpg/hdr/canon_hdr_YES.jpg"), new_path: None }
+[00:00:00.045] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/Canon_40D_photoshop_import.jpg", trying ffmpeg...
+[00:00:00.045] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/Canon_40D_photoshop_import.jpg"
+[00:00:00.045] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/Canon_40D_photoshop_import.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/Canon_40D_photoshop_import.jpg" }
+[00:00:00.046] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/PaintTool_sample.jpg", trying ffmpeg...
+[00:00:00.046] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/PaintTool_sample.jpg"
+[00:00:00.046] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/PaintTool_sample.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/PaintTool_sample.jpg" }
+[00:00:00.047] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2001-04-06T11:51:40), path: Some("./test-assets/jpg/exif-org/nikon-e950.jpg"), new_path: None }
+[00:00:00.047] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-11-07T10:41:43), path: Some("./test-assets/jpg/exif-org/olympus-c960.jpg"), new_path: None }
+[00:00:00.047] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(1998-12-01T14:22:36), path: Some("./test-assets/jpg/exif-org/sony-d700.jpg"), new_path: None }
+[00:00:00.047] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-11-18T21:14:19), path: Some("./test-assets/jpg/exif-org/sanyo-vpcsx550.jpg"), new_path: None }
+[00:00:00.048] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-09-30T10:59:45), path: Some("./test-assets/jpg/exif-org/sony-cybershot.jpg"), new_path: None }
+[00:00:00.048] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-05-31T21:50:40), path: Some("./test-assets/jpg/exif-org/ricoh-rdc5300.jpg"), new_path: None }
+[00:00:00.048] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2001-04-12T20:33:14), path: Some("./test-assets/jpg/exif-org/fujifilm-dx10.jpg"), new_path: None }
+[00:00:00.048] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-08-04T18:22:57), path: Some("./test-assets/jpg/exif-org/fujifilm-finepix40i.jpg"), new_path: None }
+[00:00:00.049] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(1998-01-01T00:00:00), path: Some("./test-assets/jpg/exif-org/sanyo-vpcg250.jpg"), new_path: None }
+[00:00:00.049] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-09-02T14:30:10), path: Some("./test-assets/jpg/exif-org/fujifilm-mx1700.jpg"), new_path: None }
+[00:00:00.049] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/exif-org/olympus-d320l.jpg", trying ffmpeg...
+[00:00:00.050] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/exif-org/olympus-d320l.jpg"
+[00:00:00.050] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/exif-org/olympus-d320l.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/exif-org/olympus-d320l.jpg" }
+[00:00:00.050] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/exif-org/sony-powershota5.jpg", trying ffmpeg...
+[00:00:00.051] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/exif-org/sony-powershota5.jpg"
+[00:00:00.051] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/exif-org/sony-powershota5.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/exif-org/sony-powershota5.jpg" }
+[00:00:00.051] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2000-10-26T16:46:51), path: Some("./test-assets/jpg/exif-org/kodak-dc210.jpg"), new_path: None }
+[00:00:00.052] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2001-06-09T15:17:32), path: Some("./test-assets/jpg/exif-org/canon-ixus.jpg"), new_path: None }
+[00:00:00.052] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(1999-05-25T21:00:09), path: Some("./test-assets/jpg/exif-org/kodak-dc240.jpg"), new_path: None }
+[00:00:00.052] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image01980.jpg", trying ffmpeg...
+[00:00:00.053] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image01980.jpg"
+[00:00:00.053] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image01980.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image01980.jpg" }
+[00:00:00.053] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image01088.jpg", trying ffmpeg...
+[00:00:00.054] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image01088.jpg"
+[00:00:00.054] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image01088.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image01088.jpg" }
+[00:00:00.054] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image02206.jpg", trying ffmpeg...
+[00:00:00.055] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image02206.jpg"
+[00:00:00.055] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image02206.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image02206.jpg" }
+[00:00:00.055] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image00971.jpg", trying ffmpeg...
+[00:00:00.056] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image00971.jpg"
+[00:00:00.056] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image00971.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image00971.jpg" }
+[00:00:00.056] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image01713.jpg", trying ffmpeg...
+[00:00:00.057] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image01713.jpg"
+[00:00:00.057] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image01713.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image01713.jpg" }
+[00:00:00.057] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image01137.jpg", trying ffmpeg...
+[00:00:00.057] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image01137.jpg"
+[00:00:00.058] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image01137.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image01137.jpg" }
+[00:00:00.058] (7f95cdd103c0) INFO   No regular image exif in "./test-assets/jpg/invalid/image01551.jpg", trying ffmpeg...
+[00:00:00.058] (7f95cdd103c0) INFO   Couldn't get ffmpeg date from "./test-assets/jpg/invalid/image01551.jpg"
+[00:00:00.058] (7f95cdd103c0) WARN   Couldn't discover file "./test-assets/jpg/invalid/image01551.jpg" because of PsError { kind: NoDateField, msg: "No EXIF of any kind in ./test-assets/jpg/invalid/image01551.jpg" }
+[00:00:00.059] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2005-08-13T09:47:23), path: Some("./test-assets/jpg/Kodak_CX7530.jpg"), new_path: None }
+[00:00:00.059] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2003-12-14T12:01:44), path: Some("./test-assets/jpg/Canon_PowerShot_S40.jpg"), new_path: None }
+[00:00:00.059] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2006-10-22T15:44:29), path: Some("./test-assets/jpg/Olympus_C8080WZ.jpg"), new_path: None }
+[00:00:00.060] (7f95cdd103c0) INFO   Adding file to collection: Photo { date: Some(2026-11-24T14:41:16), path: Some("./test-assets/jpg/WWL_(Polaroid)_ION230.jpg"), new_path: None }
+[00:00:00.060] (7f95cdd103c0) INFO   Produced a list of 55 files
+[00:00:00.060] (7f95cdd103c0) INFO   Updated a list of 91 files
+[00:00:00.065] (7f95cdd103c0) INFO   Moved photo ./test-assets/mpeg/05112011034.mp4 -> /tmp/photo//2011/11/05/05112011034.mp4
+[00:00:00.065] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Pentax_K10D.jpg -> /tmp/photo//2008/05/04/Pentax_K10D.jpg
+[00:00:00.066] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Canon_DIGITAL_IXUS_400.jpg -> /tmp/photo//2004/08/27/Canon_DIGITAL_IXUS_400.jpg
+[00:00:00.067] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/36-memory_error.jpg -> /tmp/photo//2002/04/21/36-memory_error.jpg
+[00:00:00.068] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/87_OSError.jpg -> /tmp/photo//2005/12/14/87_OSError.jpg
+[00:00:00.070] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/42_IndexError.jpg -> /tmp/photo//2014/08/23/42_IndexError.jpg
+[00:00:00.071] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/11-tests.jpg -> /tmp/photo//2007/09/03/11-tests.jpg
+[00:00:00.072] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/33-type_error.jpg -> /tmp/photo//2008/05/25/33-type_error.jpg
+[00:00:00.072] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/32-lens_data.jpeg -> /tmp/photo//2012/07/14/32-lens_data.jpeg
+[00:00:00.079] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/46_UnicodeEncodeError.jpg -> /tmp/photo//2012/06/22/46_UnicodeEncodeError.jpg
+[00:00:00.080] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/22-canon_tags.jpg -> /tmp/photo//2007/11/29/22-canon_tags.jpg
+[00:00:00.081] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/28-hex_value.jpg -> /tmp/photo//2008/08/21/28-hex_value.jpg
+[00:00:00.082] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/tests/35-empty.jpg -> /tmp/photo//2005/07/19/35-empty.jpg
+[00:00:00.083] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Panasonic_DMC-FZ30.jpg -> /tmp/photo//2008/07/16/Panasonic_DMC-FZ30.jpg
+[00:00:00.083] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Ricoh_Caplio_RR330.jpg -> /tmp/photo//2004/08/31/Ricoh_Caplio_RR330.jpg
+[00:00:00.084] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/mobile/jolla.jpg -> /tmp/photo//2014/09/21/jolla.jpg
+[00:00:00.085] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Fujifilm_FinePix6900ZOOM.jpg -> /tmp/photo//2001/02/19/Fujifilm_FinePix6900ZOOM.jpg
+[00:00:00.087] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/corrupted.jpg -> /tmp/photo//2015/09/08/corrupted.jpg
+[00:00:00.087] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Fujifilm_FinePix_E500.jpg -> /tmp/photo//2006/08/17/Fujifilm_FinePix_E500.jpg
+[00:00:00.088] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0021.jpg -> /tmp/photo//2008/10/22/DSCN0021.jpg
+[00:00:00.088] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0029.jpg -> /tmp/photo//2008/10/22/DSCN0029.jpg
+[00:00:00.089] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0038.jpg -> /tmp/photo//2008/10/22/DSCN0038.jpg
+[00:00:00.089] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0027.jpg -> /tmp/photo//2008/10/22/DSCN0027.jpg
+[00:00:00.090] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0040.jpg -> /tmp/photo//2008/10/22/DSCN0040.jpg
+[00:00:00.090] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0010.jpg -> /tmp/photo//2008/10/22/DSCN0010.jpg
+[00:00:00.091] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0042.jpg -> /tmp/photo//2008/10/22/DSCN0042.jpg
+[00:00:00.091] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0025.jpg -> /tmp/photo//2008/10/22/DSCN0025.jpg
+[00:00:00.092] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/gps/DSCN0012.jpg -> /tmp/photo//2008/10/22/DSCN0012.jpg
+[00:00:00.092] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Nikon_COOLPIX_P1.jpg -> /tmp/photo//2008/03/07/Nikon_COOLPIX_P1.jpg
+[00:00:00.093] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Samsung_Digimax_i50_MP3.jpg -> /tmp/photo//2006/08/15/Samsung_Digimax_i50_MP3.jpg
+[00:00:00.093] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Canon_40D.jpg -> /tmp/photo//2008/05/30/Canon_40D.jpg
+[00:00:00.093] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Sony_HDR-HC3.jpg -> /tmp/photo//2007/06/15/Sony_HDR-HC3.jpg
+[00:00:00.094] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Konica_Minolta_DiMAGE_Z3.jpg -> /tmp/photo//2005/03/10/Konica_Minolta_DiMAGE_Z3.jpg
+[00:00:00.094] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Nikon_D70.jpg -> /tmp/photo//2008/03/15/Nikon_D70.jpg
+[00:00:00.096] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/hdr/iphone_hdr_NO.jpg -> /tmp/photo//2015/04/10/iphone_hdr_NO.jpg
+[00:00:00.097] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/hdr/canon_hdr_NO.jpg -> /tmp/photo//2015/02/09/canon_hdr_NO.jpg
+[00:00:00.098] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/hdr/iphone_hdr_YES.jpg -> /tmp/photo//2015/04/10/iphone_hdr_YES.jpg
+[00:00:00.099] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/hdr/canon_hdr_YES.jpg -> /tmp/photo//2015/02/09/canon_hdr_YES.jpg
+[00:00:00.100] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/nikon-e950.jpg -> /tmp/photo//2001/04/06/nikon-e950.jpg
+[00:00:00.100] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/olympus-c960.jpg -> /tmp/photo//2000/11/07/olympus-c960.jpg
+[00:00:00.101] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/sony-d700.jpg -> /tmp/photo//1998/12/01/sony-d700.jpg
+[00:00:00.101] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/sanyo-vpcsx550.jpg -> /tmp/photo//2000/11/18/sanyo-vpcsx550.jpg
+[00:00:00.102] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/sony-cybershot.jpg -> /tmp/photo//2000/09/30/sony-cybershot.jpg
+[00:00:00.102] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/ricoh-rdc5300.jpg -> /tmp/photo//2000/05/31/ricoh-rdc5300.jpg
+[00:00:00.103] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/fujifilm-dx10.jpg -> /tmp/photo//2001/04/12/fujifilm-dx10.jpg
+[00:00:00.103] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/fujifilm-finepix40i.jpg -> /tmp/photo//2000/08/04/fujifilm-finepix40i.jpg
+[00:00:00.103] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/sanyo-vpcg250.jpg -> /tmp/photo//1998/01/01/sanyo-vpcg250.jpg
+[00:00:00.104] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/fujifilm-mx1700.jpg -> /tmp/photo//2000/09/02/fujifilm-mx1700.jpg
+[00:00:00.104] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/kodak-dc210.jpg -> /tmp/photo//2000/10/26/kodak-dc210.jpg
+[00:00:00.105] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/canon-ixus.jpg -> /tmp/photo//2001/06/09/canon-ixus.jpg
+[00:00:00.105] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/exif-org/kodak-dc240.jpg -> /tmp/photo//1999/05/25/kodak-dc240.jpg
+[00:00:00.106] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Kodak_CX7530.jpg -> /tmp/photo//2005/08/13/Kodak_CX7530.jpg
+[00:00:00.106] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Canon_PowerShot_S40.jpg -> /tmp/photo//2003/12/14/Canon_PowerShot_S40.jpg
+[00:00:00.107] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/Olympus_C8080WZ.jpg -> /tmp/photo//2006/10/22/Olympus_C8080WZ.jpg
+[00:00:00.107] (7f95cdd103c0) INFO   Moved photo ./test-assets/jpg/WWL_(Polaroid)_ION230.jpg -> /tmp/photo//2026/11/24/WWL_(Polaroid)_ION230.jpg
