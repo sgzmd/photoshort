@@ -171,7 +171,9 @@ pub mod discovery {
         let meta = inp.metadata();
         let file_creation_time = meta.get("creation_time");
         let creation_time = if file_creation_time.is_some() {
-            Ok(extract_ndt(file_creation_time.unwrap()))
+            let creation_time = file_creation_time.unwrap();
+            info!("Extract datetime from container: {}", creation_time);
+            Ok(extract_ndt(creation_time))
         } else {
             stream_creation_time(inp)
         };
@@ -180,12 +182,21 @@ pub mod discovery {
     }
 
     fn stream_creation_time(inp: Input) -> Result<NaiveDateTime, PsError> {
+        let mut stream_num = 0;
         for stream in inp.streams() {
+            info!("Trying stream {}", stream_num);
             let meta = stream.metadata();
             let stream_creation_time = meta.get("creation_time");
             if stream_creation_time.is_some() {
-                return Ok(extract_ndt(stream_creation_time.unwrap()));
+                let stream_creation_time = stream_creation_time.unwrap();
+                info!(
+                    "Extracted data from stream {}: {}",
+                    stream_num, stream_creation_time
+                );
+                return Ok(extract_ndt(stream_creation_time));
             }
+
+            stream_num += 1;
         }
 
         return Err(PsError::new(

@@ -30,7 +30,7 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, ()> {
 
     for i in 0..zf.len() {
         bar.inc(1);
-        let result = process_ith_file(&cfg, &mut zf, &mut num_files_copied, temp_dir_path, i);
+        let result = process_ith_file(&cfg, &mut zf, i);
         match result {
             Ok(u) => {
                 info!("Processed {}-th file", i);
@@ -47,13 +47,7 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, ()> {
     Ok((num_files_copied))
 }
 
-fn process_ith_file(
-    cfg: &&Config,
-    zf: &mut ZipArchive<File>,
-    num_files_copied: &mut u64,
-    temp_dir_path: &Path,
-    i: usize,
-) -> Result<u8, PsError> {
+fn process_ith_file(cfg: &&Config, zf: &mut ZipArchive<File>, i: usize) -> Result<u8, PsError> {
     let mut file = zf.by_index(i).unwrap();
     if file.name().ends_with("/") || !discovery::is_supported_file(file.name()) {
         // Directory, not interesting
