@@ -9,9 +9,9 @@ use std::fs::File;
 use std::path::Path;
 use tempfile::TempDir;
 
-pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
-    let file = File::open(Path::new(file_path))?;
-    let mut zf = zip::ZipArchive::new(file)?;
+pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, ()> {
+    let file = File::open(Path::new(file_path)).unwrap();
+    let mut zf = zip::ZipArchive::new(file).unwrap();
 
     let bar = ProgressBar::new(zf.len() as u64);
 
@@ -23,11 +23,11 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
     );
 
     let mut num_files_copied = 0;
-    let temp_dir = TempDir::new()?;
+    let temp_dir = TempDir::new().unwrap();
     let temp_dir_path = temp_dir.path();
     for i in 0..zf.len() {
         bar.inc(1);
-        let mut file = zf.by_index(i)?;
+        let mut file = zf.by_index(i).unwrap();
         if file.name().ends_with("/") || !discovery::is_supported_file(file.name()) {
             // Directory, not interesting
             continue;
@@ -52,7 +52,7 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
         }
 
         let mut temp_file = temp_file.unwrap();
-        let written = std::io::copy(&mut file, &mut temp_file)?;
+        let written = std::io::copy(&mut file, &mut temp_file).unwrap();
 
         info!(
             "Extracted {} -> {}, {} bytes written",
@@ -78,7 +78,9 @@ pub fn process_zip_file(file_path: &str, cfg: &Config) -> Result<u64, PsError> {
                     // are creating temp file which we move later
                     true,
                     cfg.dry_run,
-                ).is_err() {
+                )
+                .is_err()
+                {
                     warn!("Failed to move file to {}", new_path.unwrap());
                 } else {
                     num_files_copied += 1;
